@@ -1,0 +1,217 @@
+.categories-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(109px, 1fr));
+  gap: 7.7px;
+  padding: 12px 0;
+  width: 100%;
+  max-width: 1450px;
+  margin: 0 auto;
+}
+
+.category-card.sticky-note-card {
+  background: #fff;
+  border-radius: 0;
+  box-shadow: 0 6px 24px 0 rgba(0,0,0,0.13), 0 1.5px 6px 0 rgba(0,0,0,0.08);
+  padding: 0;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  min-width: 84px;
+  max-width: 133px;
+  min-height: 97px;
+  height: 116px;
+  position: relative;
+  cursor: pointer;
+  overflow: hidden;
+  aspect-ratio: 1/1.1;
+}
+
+.note-paper {
+  position: absolute;
+  top: 2px;
+  left: 10px;
+  width: 88%;
+  height: 70%;
+  background: var(--note-color, #fffbe7);
+  border-radius: 8px 10px 12px 7px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.10), 0 1.5px 6px rgba(0,0,0,0.08);
+  transform: rotate(var(--note-rotate, -2deg));
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: box-shadow 0.18s, transform 0.18s;
+  overflow: visible;
+}
+
+.note-paper::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 28px;
+  height: 28px;
+  background: linear-gradient(135deg, var(--note-color, #fffbe7) 60%, #e6e6e6 100%);
+  border-bottom-right-radius: 8px;
+  box-shadow: 2px 2px 6px rgba(0,0,0,0.08);
+  transform: rotate(8deg);
+  z-index: 2;
+}
+
+.note-pin {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 22px;
+  height: 22px;
+  background: #eab308;
+  border-radius: 50%;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.18);
+  z-index: 10;
+  border: 2.5px solid #fff;
+}
+
+.note-image {
+  position: relative;
+  z-index: 4;
+  width: 80px;
+  height: 80px;
+  max-width: 110%;
+  max-height: 110%;
+  object-fit: contain;
+  margin-bottom: -18px;
+  margin-top: -18px;
+  filter: drop-shadow(0 8px 24px rgba(0,0,0,0.22));
+  background: transparent;
+  pointer-events: none;
+}
+
+.clip {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  width: 28px;
+  height: 28px;
+  z-index: 3;
+  pointer-events: none;
+  stroke: #888;
+  opacity: 0.75;
+}
+
+.note-clip {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  width: 19px;
+  height: 19px;
+  z-index: 10;
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.card-label.card-label-small {
+  margin-top: auto;
+  padding: 2.4px 3.6px 3.6px 3.6px;
+  width: 100%;
+  text-align: center;
+  min-height: 16.9px;
+  background: transparent;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2px;
+}
+.card-label.card-label-small h3 {
+  font-size: 0.847rem;
+  font-weight: 500;
+  color: #222;
+  margin: 0;
+  line-height: 1.1;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.card-label.card-label-small p {
+  font-size: 0.665rem;
+  color: #555;
+  margin: 0;
+  line-height: 1.1;
+  opacity: 0.92;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 900px) {
+  .categories-grid {
+    grid-template-columns: repeat(auto-fit, minmax(84px, 1fr));
+    gap: 3.6px;
+    padding: 4.8px 0;
+  }
+  .category-card.sticky-note-card {
+    min-width: 60.5px;
+    max-width: 96.8px;
+    min-height: 60.5px;
+    height: 72.6px;
+    aspect-ratio: 1/1.2;
+  }
+  .note-paper {
+    min-height: 24.2px;
+  }
+  .clip {
+    width: 20px;
+    height: 20px;
+    top: -4px;
+    right: -4px;
+  }
+  .card-label.card-label-small {
+    min-height: 9.7px;
+    padding: 1.2px 1.2px 1.2px 1.2px;
+    gap: 0.61px;
+  }
+  .card-label.card-label-small h3 {
+    font-size: 0.665rem;
+  }
+  .card-label.card-label-small p {
+    font-size: 0.545rem;
+  }
+  .note-image {
+    width: 44px;
+    height: 44px;
+    max-width: 120%;
+    max-height: 120%;
+    margin-bottom: -10px;
+    margin-top: -10px;
+  }
+}
+
+.note-paper img[alt="Haus & Garten"] {
+  bottom: -30%;
+}
+
+.note-paper img[alt="Auto"] {
+  bottom: -30%;
+}
+
+.note-paper img[alt="Haustiere"],
+.note-paper img[alt="Heimwerken"],
+.note-paper img[alt="Drogerie & Gesundheit"],
+.note-paper img[alt="Familie, Kind & Baby"],
+.note-paper img[alt="Geschenke & Deko"],
+.note-paper img[alt="Sport & Freizeit"] {
+  max-width: 140%;
+  max-height: 140%;
+  bottom: -10%;
+}
+
+.note-paper img[alt="Möbel & Wohnen"] {
+  bottom: -20%;
+}
+
+.note-paper img[alt="Reisen & Freizeit"] {
+  bottom: -30%;
+  filter: drop-shadow(0 10px 24px rgba(0,0,0,0.28)) drop-shadow(0 2px 6px rgba(0,0,0,0.18));
+} 

@@ -1,0 +1,118 @@
+import { Box, Typography, Button, IconButton, TextField, MenuItem, InputAdornment } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../hooks/useAuth';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import PersonIcon from '@mui/icons-material/Person';
+import AddIcon from '@mui/icons-material/Add';
+import SearchIcon from '@mui/icons-material/Search';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
+import CategoryIcon from '@mui/icons-material/Category';
+import MenuIcon from '@mui/icons-material/Menu';
+import { DrawerMenu } from './DrawerMenu';
+import { useState } from 'react';
+
+interface LayoutProps {
+  children: React.ReactNode;
+}
+
+export const Layout = ({ children }: LayoutProps) => {
+  const navigate = useNavigate();
+  const { user } = useAuth();
+  const [drawerOpen, setDrawerOpen] = useState(false);
+
+  return (
+    <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', bgcolor: 'background.default' }}>
+      <Box
+        component="header"
+        className="header"
+        sx={{
+          width: '100%',
+          maxWidth: '100%',
+          boxSizing: 'border-box',
+          position: 'sticky',
+          top: 0,
+          bgcolor: 'background.paper',
+          borderBottom: '1px solid',
+          borderColor: 'divider',
+          zIndex: 3000,
+          px: { xs: 0, sm: 0 },
+          py: 0,
+        }}
+      >
+        {/* Zentrierter Container für Header-Inhalt */}
+        <Box sx={{ maxWidth: 1200, mx: 'auto', width: '100%', px: 2 }}>
+          {/* Erste Zeile: Menü, Logo, User */}
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              width: '100%',
+              minHeight: 48,
+              px: 1.5,
+              py: 0.5,
+              boxSizing: 'border-box',
+              gap: 1,
+            }}
+          >
+            {/* Hamburger: Immer sichtbar, auch auf Mobile */}
+            <IconButton sx={{ minWidth: 44, minHeight: 44, p: 1, mr: 1, display: 'inline-flex !important' }} onClick={() => setDrawerOpen(true)}>
+              <MenuIcon fontSize="medium" />
+            </IconButton>
+            {/* Logo/Schriftzug */}
+            <Typography
+              variant="h6"
+              component="div"
+              sx={{
+                flex: 1,
+                textAlign: 'center',
+                fontWeight: 700,
+                color: 'primary.main',
+                fontSize: { xs: '1.1rem', sm: '1.25rem' },
+                cursor: 'pointer',
+                userSelect: 'none',
+                letterSpacing: 0.2,
+                px: 1,
+              }}
+              onClick={() => navigate('/')}
+            >
+              Kleinanzeigen
+            </Typography>
+            {/* User/Login */}
+            <Box sx={{ minWidth: 44, minHeight: 44, display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
+              {user ? (
+                <IconButton color="primary" onClick={() => navigate('/profile')} sx={{ minWidth: 44, minHeight: 44 }}>
+                  <PersonIcon />
+                </IconButton>
+              ) : (
+                <IconButton color="primary" onClick={() => navigate('/login')} sx={{ minWidth: 44, minHeight: 44 }}>
+                  <PersonIcon />
+                </IconButton>
+              )}
+            </Box>
+          </Box>
+        </Box>
+      </Box>
+      <DrawerMenu open={drawerOpen} onClose={() => setDrawerOpen(false)} />
+      <Box component="main" sx={{ flex: 1 }}>
+        {children}
+      </Box>
+      <Box
+        component="footer"
+        sx={{
+          py: 3,
+          px: 2,
+          mt: 'auto',
+          bgcolor: 'background.paper',
+          borderTop: '1px solid',
+          borderColor: 'divider',
+        }}
+      >
+        <Typography variant="body2" color="text.secondary" align="center">
+          © {new Date().getFullYear()} Kleinanzeigen. Alle Rechte vorbehalten.
+        </Typography>
+      </Box>
+    </Box>
+  );
+}; 
