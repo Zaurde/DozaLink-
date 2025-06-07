@@ -87,14 +87,23 @@ function HomePage() {
                 <Section title="Neueste Anzeigen">
                   <Box sx={{
                     display: 'grid',
-                    gridTemplateColumns: { xs: 'repeat(2, 1fr)', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)', lg: 'repeat(4, 1fr)' },
-                    gap: { xs: 1, sm: 2 }
+                    gridTemplateColumns: {
+                      xs: 'repeat(2, 1fr)',
+                      sm: 'repeat(3, 1fr)',
+                      md: 'repeat(4, 1fr)'
+                    },
+                    gap: 2,
+                    maxWidth: 1200,
+                    mx: 'auto',
+                    px: 2,
+                    width: '100%',
+                    overflowX: 'auto',
                   }}>
                     {loadingAds ? (
                       <div>Lade Anzeigen...</div>
                     ) : (
                       latestAds.map((ad, idx) => (
-                        <Box key={ad.id ?? idx} sx={{ width: '100%', minWidth: 0 }}>
+                        <Box key={ad.id ?? idx} sx={{ display: 'flex', justifyContent: 'center' }}>
                           <AdCard {...ad} id={ad.id ?? String(idx)} />
                         </Box>
                       ))
@@ -104,14 +113,23 @@ function HomePage() {
                 <Section title="Für dich empfohlen">
                   <Box sx={{
                     display: 'grid',
-                    gridTemplateColumns: { xs: 'repeat(2, 1fr)', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)', lg: 'repeat(4, 1fr)' },
-                    gap: { xs: 1, sm: 2 }
+                    gridTemplateColumns: {
+                      xs: 'repeat(2, 1fr)',
+                      sm: 'repeat(3, 1fr)',
+                      md: 'repeat(4, 1fr)'
+                    },
+                    gap: 2,
+                    maxWidth: 1200,
+                    mx: 'auto',
+                    px: 2,
+                    width: '100%',
+                    overflowX: 'auto',
                   }}>
                     {loadingAds ? (
                       <div>Lade Anzeigen...</div>
                     ) : (
                       recommended.map((ad, idx) => (
-                        <Box key={ad.id ?? idx} sx={{ width: '100%', minWidth: 0 }}>
+                        <Box key={ad.id ?? idx} sx={{ display: 'flex', justifyContent: 'center' }}>
                           <AdCard {...ad} id={ad.id ?? String(idx)} />
                         </Box>
                       ))
