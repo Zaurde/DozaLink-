@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { useNavigate, Link as RouterLink } from 'react-router-dom';
 import {
   Box,
-  Typography,
   TextField,
   Button,
   Link,
@@ -10,27 +9,29 @@ import {
 } from '@mui/material';
 import { useAuth } from '../hooks/useAuth';
 import { useSnackbar } from '../context/SnackbarContext';
+import { login } from "../services/api";
 
 export const LoginForm = () => {
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { login: doLogin } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const { showSnackbar } = useSnackbar();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
+    setError(null);
     setLoading(true);
 
     try {
-      await login(email, password);
+      const data = await login(email, password);
+      doLogin(data.access_token, email);
       showSnackbar('Erfolgreich eingeloggt!', 'success');
       navigate('/');
     } catch (err: any) {
-      setError(err.response?.data?.message || 'Anmeldung fehlgeschlagen');
+      setError(err.message);
     } finally {
       setLoading(false);
     }

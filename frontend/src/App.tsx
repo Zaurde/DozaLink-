@@ -8,14 +8,11 @@ import { FavoritesPage } from './pages/FavoritesPage';
 import { CategoryPage } from './pages/CategoryPage';
 import { ChatPage } from './pages/ChatPage';
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { ListingForm } from './components/ListingForm';
-import { ListingEditForm } from './components/ListingEditForm';
+import { ListingForm } from "./components/ListingForm";
 import { FavoritesProvider } from './components/FavoritesContext';
 import { AuthProvider } from './hooks/useAuth';
 import { Layout } from './components/Layout';
 import { Login } from './components/Login';
-import { Register } from './components/Register';
 import { Profile } from './components/Profile';
 import { CreateListing } from './components/CreateListing';
 import { EditListing } from './components/EditListing';
@@ -23,57 +20,26 @@ import { SnackbarProvider } from './context/SnackbarContext';
 import { theme } from './theme';
 import { ElektronikPage } from './pages/ElektronikPage';
 import Sidebar from './components/Sidebar';
-import MenuIcon from '@mui/icons-material/Menu';
 import AdCard from './components/AdCard';
-import { FilterBar } from './components/FilterBar';
-import SearchIcon from '@mui/icons-material/Search';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
-import FilterListIcon from '@mui/icons-material/FilterList';
-import { categoriesConfig } from './config/categoriesConfig';
 import TipsGuide from './components/TipsGuide';
-import MailIcon from '@mui/icons-material/Mail';
-import { galleryItems } from './components/GallerySection';
 import { adService } from './services/adService';
 import type { Ad } from './services/adService';
 import { Section } from './components/Section';
+import BackendDemo from './components/BackendDemo';
+import ListingList from "./components/ListingList";
+import { LoginForm } from "./components/LoginForm";
+import RegisterForm from "./components/RegisterForm";
+import { ProtectedRoute } from "./components/ProtectedRoute";
 
 function HomePage() {
-  const theme = useTheme();
-  const [activeCategory, setActiveCategory] = useState('');
-  const [activeSubcategory, setActiveSubcategory] = useState('');
-  const [search, setSearch] = useState('');
-  const navigate = useNavigate();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-  const [category, setCategory] = useState('');
-  const [location, setLocation] = useState('');
-  const [filterModalOpen, setFilterModalOpen] = useState(false);
-  const [priceMin, setPriceMin] = useState('');
-  const [priceMax, setPriceMax] = useState('');
-  const [sort, setSort] = useState('newest');
+  const [category] = useState('');
+  const [location] = useState('');
+  const [priceMin] = useState('');
+  const [priceMax] = useState('');
+  const [sort] = useState('newest');
   const [ads, setAds] = useState<Ad[]>([]);
   const [loadingAds, setLoadingAds] = useState(true);
-
-  const handleCategorySelect = (cat: string, subcat?: string) => {
-    if (cat) {
-      if (subcat) {
-        navigate(`/category/${cat}/${subcat}`);
-      } else {
-        navigate(`/category/${cat}`);
-      }
-    }
-    setActiveCategory(cat === activeCategory && !subcat ? '' : cat);
-    setActiveSubcategory(subcat || '');
-  };
-
-  const resetFilters = () => {
-    setSearch('');
-    setCategory('');
-    setLocation('');
-    setPriceMin('');
-    setPriceMax('');
-    setSort('newest');
-    setFilterModalOpen(false);
-  };
+  const [search] = useState('');
 
   useEffect(() => {
     const fetchAds = async () => {
@@ -121,14 +87,14 @@ function HomePage() {
                 <Section title="Neueste Anzeigen">
                   <Box sx={{
                     display: 'grid',
-                    gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)', lg: 'repeat(4, 1fr)' },
-                    gap: 2
+                    gridTemplateColumns: { xs: 'repeat(2, 1fr)', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)', lg: 'repeat(4, 1fr)' },
+                    gap: { xs: 1, sm: 2 }
                   }}>
                     {loadingAds ? (
                       <div>Lade Anzeigen...</div>
                     ) : (
                       latestAds.map((ad, idx) => (
-                        <Box key={ad.id ?? idx}>
+                        <Box key={ad.id ?? idx} sx={{ width: '100%', minWidth: 0 }}>
                           <AdCard {...ad} id={ad.id ?? String(idx)} />
                         </Box>
                       ))
@@ -138,14 +104,14 @@ function HomePage() {
                 <Section title="Für dich empfohlen">
                   <Box sx={{
                     display: 'grid',
-                    gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)', lg: 'repeat(4, 1fr)' },
-                    gap: 2
+                    gridTemplateColumns: { xs: 'repeat(2, 1fr)', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)', lg: 'repeat(4, 1fr)' },
+                    gap: { xs: 1, sm: 2 }
                   }}>
                     {loadingAds ? (
                       <div>Lade Anzeigen...</div>
                     ) : (
                       recommended.map((ad, idx) => (
-                        <Box key={ad.id ?? idx}>
+                        <Box key={ad.id ?? idx} sx={{ width: '100%', minWidth: 0 }}>
                           <AdCard {...ad} id={ad.id ?? String(idx)} />
                         </Box>
                       ))
@@ -179,6 +145,7 @@ function HomePage() {
         priceMax={priceMax}
         sort={sort}
       />
+      <ListingList />
     </Box>
   );
 }
@@ -199,9 +166,13 @@ function App() {
                   <Route path="/listing/:id" element={<ListingDetail />} />
                   <Route path="/favorites" element={<FavoritesPage />} />
                   <Route path="/login" element={<Login />} />
-                  <Route path="/register" element={<Register />} />
+                  <Route path="/register" element={<RegisterForm />} />
                   <Route path="/profile" element={<Profile />} />
-                  <Route path="/create-listing" element={<CreateListing />} />
+                  <Route path="/create-listing" element={
+                    <ProtectedRoute>
+                      <CreateListing />
+                    </ProtectedRoute>
+                  } />
                   <Route path="/edit-listing/:id" element={<EditListing />} />
                   <Route path="/chat" element={<ChatPage />} />
                   <Route path="/search" element={<ListingGridFull />} />
@@ -210,6 +181,8 @@ function App() {
                   <Route path="/kategorien/:slug/:sub" element={<CategoryPage />} />
                   <Route path="/ratgeber" element={<TipsGuide />} />
                   <Route path="/new" element={<ListingForm />} />
+                  <Route path="/backend-demo" element={<BackendDemo />} />
+                  <Route path="/login-form" element={<LoginForm />} />
                   <Route path="*" element={<div>404 - Page Not Found</div>} />
                 </Routes>
               </Layout>
@@ -218,6 +191,7 @@ function App() {
           </SnackbarProvider>
         </FavoritesProvider>
       </AuthProvider>
+      <BackendDemo />
     </ThemeProvider>
   );
 }

@@ -6,17 +6,32 @@ import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../hooks/useAuth';
 
 export const BottomNav = () => {
   const [value, setValue] = useState(0);
   const navigate = useNavigate();
+  const { user } = useAuth();
 
   const handleChange = (_: any, newValue: number) => {
     setValue(newValue);
-    if (newValue === 1) navigate('/favorites');
-    if (newValue === 0) navigate('/');
-    if (newValue === 2) navigate('/new');
-    // Weitere Navigationen können ergänzt werden
+    switch (newValue) {
+      case 0:
+        navigate('/');
+        break;
+      case 1:
+        navigate('/favorites');
+        break;
+      case 2:
+        navigate('/new');
+        break;
+      case 3:
+        navigate('/chat');
+        break;
+      case 4:
+        navigate(user ? '/profile' : '/login');
+        break;
+    }
   };
 
   return (
@@ -36,13 +51,35 @@ export const BottomNav = () => {
         showLabels
         value={value}
         onChange={handleChange}
-        sx={{ bgcolor: '#fff' }}
+        sx={{ 
+          bgcolor: '#fff',
+          height: 64,
+          '& .MuiBottomNavigationAction-root': {
+            minWidth: 'auto',
+            padding: '6px 12px',
+          }
+        }}
       >
-        <BottomNavigationAction label="Suchen" icon={<SearchIcon />} />
-        <BottomNavigationAction label="Favoriten" icon={<FavoriteBorderIcon />} />
-        <BottomNavigationAction label="Inserieren" icon={<AddCircleOutlineIcon sx={{ fontSize: 32 }} color="primary" />} />
-        <BottomNavigationAction label="Nachrichten" icon={<ChatBubbleOutlineIcon />} />
-        <BottomNavigationAction label="Meins" icon={<PersonOutlineIcon />} />
+        <BottomNavigationAction 
+          label="Suchen" 
+          icon={<SearchIcon />} 
+        />
+        <BottomNavigationAction 
+          label="Favoriten" 
+          icon={<FavoriteBorderIcon />} 
+        />
+        <BottomNavigationAction 
+          label="Inserieren" 
+          icon={<AddCircleOutlineIcon sx={{ fontSize: 32 }} color="primary" />} 
+        />
+        <BottomNavigationAction 
+          label="Chat" 
+          icon={<ChatBubbleOutlineIcon />} 
+        />
+        <BottomNavigationAction 
+          label={user ? "Profil" : "Login"} 
+          icon={<PersonOutlineIcon />} 
+        />
       </BottomNavigation>
     </Paper>
   );

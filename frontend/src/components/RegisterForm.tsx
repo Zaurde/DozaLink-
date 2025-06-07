@@ -1,46 +1,37 @@
 import { useState } from 'react';
-import { useNavigate, Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 import {
   Box,
-  Typography,
   TextField,
   Button,
   Link,
   Alert,
 } from '@mui/material';
-import { useAuth } from '../hooks/useAuth';
-import { createUserWithEmailAndPassword, getAuth, updateProfile } from "firebase/auth";
+import { register } from "../services/api";
 
-export const RegisterForm = () => {
-  const navigate = useNavigate();
-  const { register } = useAuth();
+export default function RegisterForm() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
+    setError(null);
+    setSuccess(false);
 
     if (password !== confirmPassword) {
       setError('Die Passwörter stimmen nicht überein');
       return;
     }
 
-    setLoading(true);
-
     try {
-      const auth = getAuth();
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      await updateProfile(userCredential.user, { displayName: name });
-      navigate('/');
+      await register(email, password);
+      setSuccess(true);
     } catch (err: any) {
-      setError(err.code ? `Firebase: ${err.code}` : (err.message || 'Registrierung fehlgeschlagen'));
-    } finally {
-      setLoading(false);
+      setError(err.message);
     }
   };
 
@@ -49,6 +40,12 @@ export const RegisterForm = () => {
       {error && (
         <Alert severity="error" sx={{ mb: 2 }}>
           {error}
+        </Alert>
+      )}
+
+      {success && (
+        <Alert severity="success" sx={{ mb: 2 }}>
+          Registrierung erfolgreich!
         </Alert>
       )}
 
@@ -108,9 +105,8 @@ export const RegisterForm = () => {
         fullWidth
         variant="contained"
         sx={{ mt: 3, mb: 2, py: 1.5 }}
-        disabled={loading}
       >
-        {loading ? 'Wird registriert...' : 'Registrieren'}
+        Registrieren
       </Button>
       <Box sx={{ textAlign: 'center' }}>
         <Link component={RouterLink} to="/login" variant="body2">
@@ -119,4 +115,4 @@ export const RegisterForm = () => {
       </Box>
     </Box>
   );
-}; 
+} 

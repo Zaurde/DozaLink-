@@ -1,5 +1,5 @@
 import { Box, Typography, Button, IconButton, TextField, MenuItem, InputAdornment } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import PersonIcon from '@mui/icons-material/Person';
@@ -17,7 +17,7 @@ interface LayoutProps {
 
 export const Layout = ({ children }: LayoutProps) => {
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   return (
@@ -39,58 +39,101 @@ export const Layout = ({ children }: LayoutProps) => {
           py: 0,
         }}
       >
-        {/* Zentrierter Container für Header-Inhalt */}
-        <Box sx={{ maxWidth: 1200, mx: 'auto', width: '100%', px: 2 }}>
-          {/* Erste Zeile: Menü, Logo, User */}
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              width: '100%',
-              minHeight: 48,
-              px: 1.5,
-              py: 0.5,
-              boxSizing: 'border-box',
-              gap: 1,
-            }}
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            width: '100%',
+            minHeight: 48,
+            px: 1.5,
+            py: 0.5,
+            boxSizing: 'border-box',
+            gap: 1,
+          }}
+        >
+          <IconButton 
+            sx={{ 
+              minWidth: 44, 
+              minHeight: 44, 
+              p: 1, 
+              mr: 1, 
+              display: 'inline-flex !important' 
+            }} 
+            onClick={() => setDrawerOpen(true)}
           >
-            {/* Hamburger: Immer sichtbar, auch auf Mobile */}
-            <IconButton sx={{ minWidth: 44, minHeight: 44, p: 1, mr: 1, display: 'inline-flex !important' }} onClick={() => setDrawerOpen(true)}>
-              <MenuIcon fontSize="medium" />
-            </IconButton>
-            {/* Logo/Schriftzug */}
-            <Typography
-              variant="h6"
-              component="div"
-              sx={{
-                flex: 1,
-                textAlign: 'center',
-                fontWeight: 700,
-                color: 'primary.main',
-                fontSize: { xs: '1.1rem', sm: '1.25rem' },
-                cursor: 'pointer',
-                userSelect: 'none',
-                letterSpacing: 0.2,
-                px: 1,
-              }}
-              onClick={() => navigate('/')}
-            >
-              Kleinanzeigen
-            </Typography>
-            {/* User/Login */}
-            <Box sx={{ minWidth: 44, minHeight: 44, display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
-              {user ? (
-                <IconButton color="primary" onClick={() => navigate('/profile')} sx={{ minWidth: 44, minHeight: 44 }}>
+            <MenuIcon fontSize="medium" />
+          </IconButton>
+
+          <Typography
+            variant="h6"
+            component="div"
+            sx={{
+              flex: 1,
+              textAlign: 'center',
+              fontWeight: 700,
+              color: 'primary.main',
+              fontSize: { xs: '1.1rem', sm: '1.25rem' },
+              cursor: 'pointer',
+              userSelect: 'none',
+              letterSpacing: 0.2,
+              px: 1,
+            }}
+            onClick={() => navigate('/')}
+          >
+            Kleinanzeigen
+          </Typography>
+
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            {user ? (
+              <>
+                <Typography 
+                  variant="body2" 
+                  sx={{ 
+                    mr: 1, 
+                    display: { xs: 'none', sm: 'block' },
+                    color: 'text.secondary'
+                  }}
+                >
+                  {user.email}
+                </Typography>
+                <Button 
+                  color="inherit" 
+                  size="small" 
+                  onClick={logout} 
+                  sx={{ 
+                    display: { xs: 'none', sm: 'block' },
+                    color: 'text.secondary'
+                  }}
+                >
+                  Logout
+                </Button>
+                <IconButton 
+                  color="primary" 
+                  onClick={() => navigate('/profile')} 
+                  sx={{ 
+                    minWidth: 44, 
+                    minHeight: 44,
+                    display: { xs: 'flex', sm: 'none' }
+                  }}
+                >
                   <PersonIcon />
                 </IconButton>
-              ) : (
-                <IconButton color="primary" onClick={() => navigate('/login')} sx={{ minWidth: 44, minHeight: 44 }}>
-                  <PersonIcon />
-                </IconButton>
-              )}
-            </Box>
+              </>
+            ) : (
+              <Button 
+                color="primary" 
+                component={Link} 
+                to="/login" 
+                size="small"
+                sx={{
+                  display: { xs: 'none', sm: 'block' }
+                }}
+              >
+                Login
+              </Button>
+            )}
           </Box>
         </Box>
       </Box>

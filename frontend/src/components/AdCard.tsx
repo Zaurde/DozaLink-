@@ -78,9 +78,9 @@ export const AvitoListingItem = ({
   return (
     <Box
       sx={{
-        width: { xs: 196, md: 236 },
-        minWidth: { xs: 196, md: 236 },
-        maxWidth: { xs: 196, md: 236 },
+        width: '100%',
+        minWidth: { md: 236 },
+        maxWidth: { md: 236 },
         height: { xs: 320, md: 340 },
         minHeight: { xs: 320, md: 340 },
         maxHeight: { xs: 320, md: 340 },
