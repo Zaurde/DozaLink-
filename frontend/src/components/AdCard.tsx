@@ -20,12 +20,7 @@ const AdCard: React.FC<AdCardProps> = ({ id, title, price, location, images }) =
 
   return (
     <Box
-      component={RouterLink}
-      to={`/listing/${id}`}
       sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        position: 'relative',
         width: 236,
         minWidth: 236,
         maxWidth: 236,
@@ -33,68 +28,29 @@ const AdCard: React.FC<AdCardProps> = ({ id, title, price, location, images }) =
         minHeight: 354,
         maxHeight: 354,
         bgcolor: '#fff',
-        borderRadius: 2.5,
-        boxShadow: '0 1px 4px rgba(0,0,0,0.04)',
-        transition: 'box-shadow 0.2s, transform 0.2s',
-        textDecoration: 'none',
-        color: 'inherit',
+        borderRadius: 3,
+        boxShadow: 'none',
+        transition: 'box-shadow 0.2s',
+        fontFamily: 'Inter, Roboto, system-ui, Arial, sans-serif',
         overflow: 'hidden',
-        cursor: 'pointer',
+        cursor: 'default',
+        display: 'flex',
+        flexDirection: 'column',
         '&:hover': {
-          boxShadow: '0 4px 16px rgba(0,0,0,0.10)',
-          transform: 'scale(1.02)',
+          boxShadow: '0 4px 12px rgba(0,0,0,0.10)',
         },
-        userSelect: 'text',
       }}
     >
-      {/* Favoriten-Icon oben rechts */}
-      <IconButton
-        sx={{
-          position: 'absolute',
-          top: 8,
-          right: 8,
-          zIndex: 2,
-          bgcolor: 'rgba(255,255,255,0.85)',
-          '&:hover': { bgcolor: 'rgba(255,255,255,1)' },
-        }}
-        onClick={e => e.preventDefault()}
-        aria-label="Favorit"
-      >
-        <FavoriteBorderIcon fontSize="medium" />
-      </IconButton>
-      {/* Drei-Punkte-Menü oben rechts, leicht darunter */}
-      <IconButton
-        sx={{
-          position: 'absolute',
-          top: 44,
-          right: 8,
-          zIndex: 2,
-          bgcolor: 'rgba(255,255,255,0.85)',
-          '&:hover': { bgcolor: 'rgba(255,255,255,1)' },
-        }}
-        onClick={handleMenuOpen}
-        aria-label="Mehr"
-      >
-        <MoreVertIcon fontSize="medium" />
-      </IconButton>
-      <Menu anchorEl={anchorEl} open={open} onClose={handleMenuClose} onClick={e => e.stopPropagation()}>
-        <MenuItem onClick={handleMenuClose}>Merken</MenuItem>
-        <MenuItem onClick={handleMenuClose}>Teilen</MenuItem>
-      </Menu>
-      {/* Bild */}
-      <Box
-        sx={{
-          width: '100%',
-          height: 180,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          overflow: 'hidden',
-          borderTopLeftRadius: 10,
-          borderTopRightRadius: 10,
-          background: '#f7f7f7',
-        }}
-      >
+      {/* Bildbereich mit Icons */}
+      <Box sx={{
+        position: 'relative',
+        width: '100%',
+        height: 180,
+        overflow: 'hidden',
+        borderTopLeftRadius: 3,
+        borderTopRightRadius: 3,
+        bgcolor: '#f7f7f7',
+      }}>
         <img
           src={images && images.length > 0 ? images[0] : '/placeholder.jpg'}
           alt={title}
@@ -102,36 +58,77 @@ const AdCard: React.FC<AdCardProps> = ({ id, title, price, location, images }) =
             width: '100%',
             height: '100%',
             objectFit: 'cover',
-            borderTopLeftRadius: 10,
-            borderTopRightRadius: 10,
+            borderTopLeftRadius: 12,
+            borderTopRightRadius: 12,
             display: 'block',
           }}
         />
+        {/* Favoriten-Icon oben rechts */}
+        <IconButton
+          sx={{
+            position: 'absolute',
+            top: 8,
+            right: 44,
+            zIndex: 2,
+            bgcolor: 'rgba(255,255,255,0.85)',
+            '&:hover': { bgcolor: 'rgba(255,255,255,1)' },
+            boxShadow: '0 1px 4px rgba(0,0,0,0.08)',
+          }}
+          onClick={e => e.preventDefault()}
+          aria-label="Favorit"
+        >
+          <FavoriteBorderIcon fontSize="medium" />
+        </IconButton>
+        {/* Drei-Punkte-Menü oben rechts */}
+        <IconButton
+          sx={{
+            position: 'absolute',
+            top: 8,
+            right: 8,
+            zIndex: 2,
+            bgcolor: 'rgba(255,255,255,0.85)',
+            '&:hover': { bgcolor: 'rgba(255,255,255,1)' },
+            boxShadow: '0 1px 4px rgba(0,0,0,0.08)',
+          }}
+          onClick={handleMenuOpen}
+          aria-label="Mehr"
+        >
+          <MoreVertIcon fontSize="medium" />
+        </IconButton>
+        <Menu anchorEl={anchorEl} open={open} onClose={handleMenuClose} onClick={e => e.stopPropagation()}>
+          <MenuItem onClick={handleMenuClose}>Merken</MenuItem>
+          <MenuItem onClick={handleMenuClose}>Teilen</MenuItem>
+        </Menu>
       </Box>
-      {/* Inhalt */}
-      <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', p: 2, pt: 1.5, gap: 0.5 }}>
+      {/* Card Body */}
+      <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', px: 2, pt: 2, pb: 1.5, gap: 0.5, alignItems: 'flex-start' }}>
         <Typography
           variant="subtitle1"
-          component="a"
-          href={`/listing/${id}`}
+          component={RouterLink}
+          to={`/listing/${id}`}
           sx={{
-            fontWeight: 600,
+            fontWeight: 700,
             fontSize: 17,
-            color: 'inherit',
+            color: 'primary.main',
             textDecoration: 'none',
             mb: 0.5,
             '&:hover': { textDecoration: 'underline' },
             cursor: 'pointer',
             userSelect: 'text',
+            textAlign: 'left',
+            lineHeight: 1.2,
+            width: '100%',
+            overflow: 'hidden',
+            whiteSpace: 'nowrap',
+            textOverflow: 'ellipsis',
           }}
-          onClick={e => e.stopPropagation()}
         >
           {title}
         </Typography>
-        <Typography variant="h6" sx={{ fontWeight: 700, color: '#222', mb: 0.5, fontSize: 20 }}>
+        <Typography variant="h6" sx={{ fontWeight: 800, color: '#222', mb: 0.5, fontSize: 22, textAlign: 'left', lineHeight: 1.2 }}>
           {price ? `${price} €` : ''}
         </Typography>
-        <Typography variant="body2" sx={{ color: 'text.secondary', fontSize: 14, mt: 'auto' }}>
+        <Typography variant="body2" sx={{ color: 'text.secondary', fontSize: 14, mt: 'auto', textAlign: 'left', width: '100%' }}>
           {location}
         </Typography>
       </Box>
