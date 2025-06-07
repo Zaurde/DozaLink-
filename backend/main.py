@@ -3,7 +3,11 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlmodel import SQLModel, Field, Session, create_engine, select
 from typing import Optional, List
 
-app = FastAPI()
+app = FastAPI(
+    docs_url="/docs",
+    redoc_url="/redoc",
+    openapi_url="/openapi.json"
+)
 
 app.add_middleware(
     CORSMiddleware,
@@ -48,3 +52,7 @@ def create_listing(listing: Listing):
         session.commit()
         session.refresh(listing)
         return listing
+
+@app.get("/healthz")
+def health_check():
+    return {"status": "ok"}
