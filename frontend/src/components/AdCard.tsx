@@ -18,6 +18,23 @@ const AdCard: React.FC<AdCardProps> = ({ id, title, price, location, images }) =
   };
   const handleMenuClose = () => setAnchorEl(null);
 
+  // Avito-like image carousel on hover
+  const [activeIdx, setActiveIdx] = React.useState(0);
+  const intervalRef = React.useRef<number | null>(null);
+  const imgs = images && images.length > 0 ? images : ['/placeholder.jpg'];
+
+  const handleMouseEnter = () => {
+    if (imgs.length <= 1) return;
+    intervalRef.current = window.setInterval(() => {
+      setActiveIdx(idx => (idx + 1) % imgs.length);
+    }, 1200);
+  };
+  const handleMouseLeave = () => {
+    if (intervalRef.current) window.clearInterval(intervalRef.current);
+    setActiveIdx(0);
+  };
+  React.useEffect(() => () => { if (intervalRef.current) window.clearInterval(intervalRef.current); }, []);
+
   return (
     <Box
       sx={{
@@ -41,26 +58,51 @@ const AdCard: React.FC<AdCardProps> = ({ id, title, price, location, images }) =
         },
       }}
     >
-      {/* Bildbereich mit Icons */}
-      <Box sx={{
-        position: 'relative',
-        width: '100%',
-        height: 180,
-        overflow: 'hidden',
-        borderTopLeftRadius: 3,
-        borderTopRightRadius: 3,
-        bgcolor: '#f7f7f7',
-      }}>
-        <img
-          src={images && images.length > 0 ? images[0] : '/placeholder.jpg'}
+      {/* Bildbereich mit Avito-Blur-Background und Icons */}
+      <Box
+        sx={{
+          position: 'relative',
+          width: '100%',
+          height: 180,
+          overflow: 'hidden',
+          borderTopLeftRadius: 12,
+          borderTopRightRadius: 12,
+          bgcolor: '#f7f7f7',
+        }}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+      >
+        {/* Blurred Background */}
+        <Box
+          component="img"
+          src={imgs[activeIdx]}
+          alt=""
+          aria-hidden
+          sx={{
+            position: 'absolute',
+            top: 0, left: 0, width: '100%', height: '100%',
+            objectFit: 'cover',
+            filter: 'blur(18px) brightness(1.1) opacity(0.7)',
+            zIndex: 1,
+            transition: 'opacity 0.4s cubic-bezier(.4,0,.2,1)',
+          }}
+        />
+        {/* Main Image */}
+        <Box
+          component="img"
+          src={imgs[activeIdx]}
           alt={title}
-          style={{
+          sx={{
+            position: 'relative',
             width: '100%',
             height: '100%',
-            objectFit: 'cover',
+            objectFit: 'contain',
+            zIndex: 2,
             borderTopLeftRadius: 12,
             borderTopRightRadius: 12,
+            background: '#f3f4f6',
             display: 'block',
+            transition: 'opacity 0.4s cubic-bezier(.4,0,.2,1)',
           }}
         />
         {/* Favoriten-Icon oben rechts */}
@@ -69,7 +111,7 @@ const AdCard: React.FC<AdCardProps> = ({ id, title, price, location, images }) =
             position: 'absolute',
             top: 8,
             right: 44,
-            zIndex: 2,
+            zIndex: 3,
             bgcolor: 'rgba(255,255,255,0.85)',
             '&:hover': { bgcolor: 'rgba(255,255,255,1)' },
             boxShadow: '0 1px 4px rgba(0,0,0,0.08)',
@@ -85,7 +127,7 @@ const AdCard: React.FC<AdCardProps> = ({ id, title, price, location, images }) =
             position: 'absolute',
             top: 8,
             right: 8,
-            zIndex: 2,
+            zIndex: 3,
             bgcolor: 'rgba(255,255,255,0.85)',
             '&:hover': { bgcolor: 'rgba(255,255,255,1)' },
             boxShadow: '0 1px 4px rgba(0,0,0,0.08)',
