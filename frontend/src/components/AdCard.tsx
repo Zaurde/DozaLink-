@@ -67,7 +67,7 @@ const AdCard: React.FC<AdCardProps> = ({ id, title, price, location, images }) =
           overflow: 'hidden',
           borderTopLeftRadius: 3,
           borderTopRightRadius: 3,
-          bgcolor: '#f7f7f7',
+          bgcolor: '#fff',
         }}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
@@ -100,7 +100,6 @@ const AdCard: React.FC<AdCardProps> = ({ id, title, price, location, images }) =
             zIndex: 2,
             borderTopLeftRadius: 12,
             borderTopRightRadius: 12,
-            background: '#f3f4f6',
             display: 'block',
             transition: 'opacity 0.4s cubic-bezier(.4,0,.2,1)',
           }}
