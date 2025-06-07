@@ -47,7 +47,7 @@ const AdCard: React.FC<AdCardProps> = ({ id, title, price, location, images }) =
         bgcolor: '#fff',
         borderRadius: 3,
         boxShadow: 'none',
-        transition: 'box-shadow 0.2s',
+        transition: 'box-shadow 0.18s',
         fontFamily: 'Inter, Roboto, system-ui, Arial, sans-serif',
         overflow: 'hidden',
         cursor: 'default',
@@ -63,10 +63,10 @@ const AdCard: React.FC<AdCardProps> = ({ id, title, price, location, images }) =
         sx={{
           position: 'relative',
           width: '100%',
-          height: 180,
+          height: 236,
           overflow: 'hidden',
-          borderTopLeftRadius: 12,
-          borderTopRightRadius: 12,
+          borderTopLeftRadius: 3,
+          borderTopRightRadius: 3,
           bgcolor: '#f7f7f7',
         }}
         onMouseEnter={handleMouseEnter}
@@ -109,33 +109,39 @@ const AdCard: React.FC<AdCardProps> = ({ id, title, price, location, images }) =
         <IconButton
           sx={{
             position: 'absolute',
-            top: 8,
-            right: 44,
+            top: 10,
+            right: 38,
+            width: 22,
+            height: 22,
             zIndex: 3,
             bgcolor: 'rgba(255,255,255,0.85)',
             '&:hover': { bgcolor: 'rgba(255,255,255,1)' },
             boxShadow: '0 1px 4px rgba(0,0,0,0.08)',
+            p: 0.5,
           }}
           onClick={e => e.preventDefault()}
           aria-label="Favorit"
         >
-          <FavoriteBorderIcon fontSize="medium" />
+          <FavoriteBorderIcon fontSize="small" />
         </IconButton>
         {/* Drei-Punkte-Menü oben rechts */}
         <IconButton
           sx={{
             position: 'absolute',
-            top: 8,
-            right: 8,
+            top: 10,
+            right: 10,
+            width: 22,
+            height: 22,
             zIndex: 3,
             bgcolor: 'rgba(255,255,255,0.85)',
             '&:hover': { bgcolor: 'rgba(255,255,255,1)' },
             boxShadow: '0 1px 4px rgba(0,0,0,0.08)',
+            p: 0.5,
           }}
           onClick={handleMenuOpen}
           aria-label="Mehr"
         >
-          <MoreVertIcon fontSize="medium" />
+          <MoreVertIcon fontSize="small" />
         </IconButton>
         <Menu anchorEl={anchorEl} open={open} onClose={handleMenuClose} onClick={e => e.stopPropagation()}>
           <MenuItem onClick={handleMenuClose}>Merken</MenuItem>
@@ -143,7 +149,7 @@ const AdCard: React.FC<AdCardProps> = ({ id, title, price, location, images }) =
         </Menu>
       </Box>
       {/* Card Body */}
-      <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', px: 2, pt: 2, pb: 1.5, gap: 0.5, alignItems: 'flex-start' }}>
+      <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', px: 1.5, pt: 1.5, pb: 1, gap: 0.5, alignItems: 'flex-start' }}>
         <Typography
           variant="subtitle1"
           component={RouterLink}
@@ -154,23 +160,21 @@ const AdCard: React.FC<AdCardProps> = ({ id, title, price, location, images }) =
             color: 'primary.main',
             textDecoration: 'none',
             mb: 0.5,
-            '&:hover': { textDecoration: 'underline' },
-            cursor: 'pointer',
-            userSelect: 'text',
-            textAlign: 'left',
             lineHeight: 1.2,
             width: '100%',
             overflow: 'hidden',
-            whiteSpace: 'nowrap',
+            display: '-webkit-box',
+            WebkitLineClamp: 2,
+            WebkitBoxOrient: 'vertical',
             textOverflow: 'ellipsis',
           }}
         >
           {title}
         </Typography>
-        <Typography variant="h6" sx={{ fontWeight: 800, color: '#222', mb: 0.5, fontSize: 22, textAlign: 'left', lineHeight: 1.2 }}>
+        <Typography variant="h6" sx={{ fontWeight: 800, color: '#222', mb: 0.5, fontSize: 20, textAlign: 'left', lineHeight: 1.2 }}>
           {price ? `${price} €` : ''}
         </Typography>
-        <Typography variant="body2" sx={{ color: 'text.secondary', fontSize: 14, mt: 'auto', textAlign: 'left', width: '100%' }}>
+        <Typography variant="body2" sx={{ color: 'text.secondary', fontSize: 13, mt: 'auto', textAlign: 'left', width: '100%' }}>
           {location}
         </Typography>
       </Box>
