@@ -96,8 +96,7 @@ function HomePage() {
                     maxWidth: 1200,
                     mx: 'auto',
                     px: 2,
-                    width: '100%',
-                    overflowX: 'auto',
+                    width: '100%'
                   }}>
                     {loadingAds ? (
                       <div>Lade Anzeigen...</div>
@@ -122,8 +121,7 @@ function HomePage() {
                     maxWidth: 1200,
                     mx: 'auto',
                     px: 2,
-                    width: '100%',
-                    overflowX: 'auto',
+                    width: '100%'
                   }}>
                     {loadingAds ? (
                       <div>Lade Anzeigen...</div>
