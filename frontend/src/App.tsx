@@ -70,94 +70,92 @@ function HomePage() {
   return (
     <Box sx={{ width: '100%', py: { xs: 2, sm: 3, md: 4 } }}>
       <Box sx={{ width: '100%', mt: 1 }}>
-        <Container maxWidth="xl" sx={{ px: 0, py: 0 }}>
+        <Box
+          sx={{
+            maxWidth: 1348,
+            mx: 'auto',
+            display: 'flex',
+            flexDirection: { xs: 'column', md: 'row' },
+            alignItems: 'flex-start',
+            gap: { xs: 0, md: 3 },
+          }}
+        >
+          {/* Grid-Bereich */}
           <Box
             sx={{
-              display: { xs: 'block', md: 'flex' },
-              maxWidth: 1200,
-              mx: 'auto',
-              alignItems: 'flex-start',
-              gap: 3,
+              width: { xs: '100%', md: 980 },
+              flexShrink: 0,
+              px: { xs: 1, md: 0 },
             }}
           >
-            <Box sx={{ flex: 1, minWidth: 0 }}>
-              <Box sx={{ width: '100%', px: 2 }}>
-                <Section title="Kategorien">
-                  <CategoryCards />
-                </Section>
-                <Section title="Neueste Anzeigen">
-                  <Box sx={{
-                    display: 'grid',
-                    gridTemplateColumns: {
-                      xs: 'repeat(2, 1fr)',
-                      sm: 'repeat(3, 1fr)',
-                      md: 'repeat(4, 1fr)'
-                    },
-                    gap: 2,
-                    width: '100%'
-                  }}>
-                    {loadingAds ? (
-                      <div>Lade Anzeigen...</div>
-                    ) : (
-                      latestAds.map((ad, idx) => (
-                        <Box key={ad.id ?? idx} sx={{ display: 'flex', justifyContent: 'center' }}>
-                          <AdCard {...ad} id={ad.id ?? String(idx)} />
-                        </Box>
-                      ))
-                    )}
-                  </Box>
-                </Section>
-                <Section title="Für dich empfohlen">
-                  <Box sx={{
-                    display: 'grid',
-                    gridTemplateColumns: {
-                      xs: 'repeat(2, 1fr)',
-                      sm: 'repeat(3, 1fr)',
-                      md: 'repeat(4, 1fr)'
-                    },
-                    gap: 2,
-                    width: '100%'
-                  }}>
-                    {loadingAds ? (
-                      <div>Lade Anzeigen...</div>
-                    ) : (
-                      recommended.map((ad, idx) => (
-                        <Box key={ad.id ?? idx} sx={{ display: 'flex', justifyContent: 'center' }}>
-                          <AdCard {...ad} id={ad.id ?? String(idx)} />
-                        </Box>
-                      ))
-                    )}
-                  </Box>
-                </Section>
-              </Box>
-            </Box>
-            {/* Sidebar für Desktop (rechts) */}
-            <Box
-              sx={{
-                width: 320,
-                minWidth: 320,
-                maxWidth: 320,
-                flexShrink: 0,
-                position: 'sticky',
-                top: 80,
-                alignSelf: 'flex-start',
-                display: { xs: 'none', md: 'block' },
-              }}
-            >
-              <Sidebar />
-            </Box>
-            {/* Sidebar für Mobile/Tablet (unten) */}
-            <Box
-              sx={{
-                width: '100%',
-                display: { xs: 'block', md: 'none' },
-                mt: 3,
-              }}
-            >
-              <Sidebar />
+            <Box sx={{ width: '100%', px: 2 }}>
+              <Section title="Kategorien">
+                <CategoryCards />
+              </Section>
+              <Section title="Neueste Anzeigen">
+                <Box sx={{
+                  display: 'grid',
+                  gridTemplateColumns: {
+                    xs: 'repeat(2, 1fr)',
+                    sm: 'repeat(3, 1fr)',
+                    md: 'repeat(4, 236px)'
+                  },
+                  gap: '12px',
+                  justifyContent: { md: 'start' },
+                }}>
+                  {loadingAds ? (
+                    <div>Lade Anzeigen...</div>
+                  ) : (
+                    latestAds.map((ad, idx) => (
+                      <Box key={ad.id ?? idx} sx={{ display: 'flex', justifyContent: 'center' }}>
+                        <AdCard {...ad} id={ad.id ?? String(idx)} />
+                      </Box>
+                    ))
+                  )}
+                </Box>
+              </Section>
+              <Section title="Für dich empfohlen">
+                <Box sx={{
+                  display: 'grid',
+                  gridTemplateColumns: {
+                    xs: 'repeat(2, 1fr)',
+                    sm: 'repeat(3, 1fr)',
+                    md: 'repeat(4, 236px)'
+                  },
+                  gap: '12px',
+                  justifyContent: { md: 'start' },
+                }}>
+                  {loadingAds ? (
+                    <div>Lade Anzeigen...</div>
+                  ) : (
+                    recommended.map((ad, idx) => (
+                      <Box key={ad.id ?? idx} sx={{ display: 'flex', justifyContent: 'center' }}>
+                        <AdCard {...ad} id={ad.id ?? String(idx)} />
+                      </Box>
+                    ))
+                  )}
+                </Box>
+              </Section>
             </Box>
           </Box>
-        </Container>
+          {/* Sidebar für Desktop (rechts) */}
+          <Box
+            sx={{
+              width: 300,
+              minWidth: 300,
+              maxWidth: 300,
+              flexShrink: 0,
+              ml: { md: 3 },
+              mt: { xs: 3, md: 0 },
+              display: { xs: 'none', md: 'block' },
+              position: 'sticky',
+              top: 84,
+              alignSelf: 'flex-start',
+            }}
+          >
+            <Sidebar />
+          </Box>
+        </Box>
       </Box>
       <ListingGridFull
         category={category}
