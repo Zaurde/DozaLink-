@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { ThemeProvider, CssBaseline, Container, Typography, Box, useTheme, useMediaQuery, Grid, IconButton, TextField, InputAdornment, MenuItem, Button, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
+import { ThemeProvider, CssBaseline, Container, Box, useTheme, useMediaQuery, Grid, IconButton, TextField, InputAdornment, MenuItem, Button, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import { CategoryCards } from './components/CategoryCards';
 import { ListingGridFull } from './components/ListingGridFull';
 import { BottomNav } from './components/BottomNav';
@@ -94,9 +94,6 @@ function HomePage() {
                       md: 'repeat(4, 1fr)'
                     },
                     gap: 2,
-                    maxWidth: 1200,
-                    mx: 'auto',
-                    px: 2,
                     width: '100%'
                   }}>
                     {loadingAds ? (
@@ -119,9 +116,6 @@ function HomePage() {
                       md: 'repeat(4, 1fr)'
                     },
                     gap: 2,
-                    maxWidth: 1200,
-                    mx: 'auto',
-                    px: 2,
                     width: '100%'
                   }}>
                     {loadingAds ? (
