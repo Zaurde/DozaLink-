@@ -74,13 +74,14 @@ function HomePage() {
           <Box
             sx={{
               display: { xs: 'block', md: 'flex' },
-              flexWrap: 'wrap',
-              gap: 3,
+              maxWidth: 1200,
+              mx: 'auto',
               alignItems: 'flex-start',
+              gap: 3,
             }}
           >
-            <Box sx={{ flex: 1, minWidth: { xs: 0, md: 340 } }}>
-              <Box sx={{ maxWidth: 1200, mx: 'auto', width: '100%', px: 2 }}>
+            <Box sx={{ flex: 1, minWidth: 0 }}>
+              <Box sx={{ width: '100%', px: 2 }}>
                 <Section title="Kategorien">
                   <CategoryCards />
                 </Section>
@@ -136,6 +137,7 @@ function HomePage() {
                 </Section>
               </Box>
             </Box>
+            {/* Sidebar für Desktop (rechts) */}
             <Box
               sx={{
                 width: 320,
@@ -143,9 +145,19 @@ function HomePage() {
                 maxWidth: 320,
                 flexShrink: 0,
                 position: 'sticky',
-                top: { xs: 64, md: 80 },
+                top: 80,
                 alignSelf: 'flex-start',
                 display: { xs: 'none', md: 'block' },
+              }}
+            >
+              <Sidebar />
+            </Box>
+            {/* Sidebar für Mobile/Tablet (unten) */}
+            <Box
+              sx={{
+                width: '100%',
+                display: { xs: 'block', md: 'none' },
+                mt: 3,
               }}
             >
               <Sidebar />
