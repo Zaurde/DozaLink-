@@ -150,7 +150,7 @@ const AdCard: React.FC<AdCardProps> = ({ id, title, price, location, images }) =
         </Menu>
       </Box>
       {/* Card Body */}
-      <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', px: 1.5, pt: 1.5, pb: 1, gap: 0.5, alignItems: 'flex-start' }}>
+      <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', px: 1.5, pt: 1.5, pb: 1, gap: 0.5, alignItems: 'flex-start', background: 'transparent', boxShadow: 'none', border: 'none' }}>
         <Typography
           variant="subtitle1"
           component={RouterLink}
