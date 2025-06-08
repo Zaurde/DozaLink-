@@ -16,7 +16,6 @@ export const ChatPage: React.FC = () => {
   useEffect(() => {
     const listingId = searchParams.get('listingId');
     const sellerId = searchParams.get('sellerId');
-    console.log('DEBUG ChatPage:', { user, listingId, sellerId });
 
     if (listingId && sellerId && user) {
       const newChat: Chat = {

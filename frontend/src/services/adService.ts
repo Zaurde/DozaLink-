@@ -37,7 +37,6 @@ export const adService = {
     const snap = await getDoc(docRef);
     if (!snap.exists()) return null;
     const data = snap.data();
-    console.log("Firestore-Daten für Anzeige:", data);
     return {
       id: snap.id,
       ...data,

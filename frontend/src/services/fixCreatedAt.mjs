@@ -33,10 +33,8 @@ async function fixCreatedAt() {
         newTimestamp = Timestamp.now();
       }
       await updateDoc(doc(db, "ads", docSnap.id), { createdAt: newTimestamp });
-      console.log(`Updated createdAt for ad ${docSnap.id}`);
     }
   }
-  console.log("Fertig!");
 }
 
 fixCreatedAt();
