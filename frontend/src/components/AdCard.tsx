@@ -48,7 +48,7 @@ const AdCard: React.FC<AdCardProps> = ({ id, title, price, location, images }) =
         borderRadius: '12px',
         boxShadow: 'none',
         transition: 'box-shadow 0.18s',
-        fontFamily: 'Inter, Roboto, system-ui, Arial, sans-serif',
+        fontFamily: 'Manrope, Inter, system-ui, Arial, sans-serif',
         overflow: 'hidden',
         cursor: 'default',
         display: 'flex',
@@ -154,11 +154,11 @@ const AdCard: React.FC<AdCardProps> = ({ id, title, price, location, images }) =
           to={`/listing/${id}`}
           sx={{
             fontWeight: 700,
-            fontSize: 17,
+            fontSize: 15,
+            lineHeight: '20px',
             color: 'primary.main',
             textDecoration: 'none',
             mb: 0.5,
-            lineHeight: 1.2,
             width: '100%',
             overflow: 'hidden',
             display: '-webkit-box',
@@ -169,10 +169,10 @@ const AdCard: React.FC<AdCardProps> = ({ id, title, price, location, images }) =
         >
           {title}
         </Typography>
-        <Typography variant="h6" sx={{ fontWeight: 800, color: '#222', mb: 0.5, fontSize: 20, textAlign: 'left', lineHeight: 1.2 }}>
+        <Typography variant="h6" sx={{ fontWeight: 800, color: '#222', mb: 0.5, fontSize: 16, textAlign: 'left', lineHeight: '20px' }}>
           {price ? `${price} €` : ''}
         </Typography>
-        <Typography variant="body2" sx={{ color: 'text.secondary', fontSize: 13, mt: 'auto', textAlign: 'left', width: '100%' }}>
+        <Typography variant="body2" sx={{ color: 'text.secondary', fontSize: 13, lineHeight: '20px', mt: 'auto', textAlign: 'left', width: '100%' }}>
           {location}
         </Typography>
       </Box>
