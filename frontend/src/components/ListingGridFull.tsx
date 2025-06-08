@@ -1,17 +1,10 @@
-import { Box, Typography, Card, CardContent, CardMedia, IconButton, Stack, TextField, MenuItem, InputAdornment, FormControl, Select, Button, CircularProgress, Chip, Skeleton, Alert } from '@mui/material';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import SearchIcon from '@mui/icons-material/Search';
+import { Box, Typography, Skeleton, Alert } from '@mui/material';
 import SentimentDissatisfiedIcon from '@mui/icons-material/SentimentDissatisfied';
-import NoImageIcon from '@mui/icons-material/Image';
-import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { useAuth } from '../hooks/useAuth';
-import Snackbar from '@mui/material/Snackbar';
 import { useFavorites } from '../hooks/useFavorites';
 import { adService } from '../services/adService';
 import AdCard from './AdCard';
+import Snackbar from '@mui/material/Snackbar';
 
 // Hilfsfunktion für Sortierung
 const sortAds = (ads: any[], sort: string) => {
@@ -22,13 +15,10 @@ const sortAds = (ads: any[], sort: string) => {
 };
 
 export const ListingGridFull = ({ category, subcategory, search, location, priceMin, priceMax, sort }: { category?: string, subcategory?: string, search?: string, location?: string, priceMin?: string, priceMax?: string, sort?: string }) => {
-  const navigate = useNavigate();
   const [ads, setAds] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const { favorites, toggleFavorite, loading: favLoading } = useFavorites();
-  const [categories, setCategories] = useState<{id: number, name: string}[]>([]);
-  const { user } = useAuth();
+  const { favorites } = useFavorites();
   const [snackbar, setSnackbar] = useState('');
 
   useEffect(() => {
@@ -47,17 +37,6 @@ export const ListingGridFull = ({ category, subcategory, search, location, price
     // setCategories(...)
   }, []);
 
-  const handleFavoriteToggle = async (adId: string) => {
-    try {
-      await toggleFavorite(adId);
-    } catch (err) {
-      setSnackbar('Fehler beim Favorisieren');
-    }
-  };
-
-  // Debugging: Logge die Filterwerte und die geladenen Anzeigen
-  // console.log('DEBUG ads:', ads);
-  // console.log('DEBUG filter:', { category, subcategory, search, priceMin, priceMax, location });
 
   // Filter-Logik: Zeige Anzeigen auch, wenn Filter leer sind
   let filteredAds = ads.filter((ad: any) => {
@@ -125,21 +104,6 @@ export const ListingGridFull = ({ category, subcategory, search, location, price
             {/* Anzeigen begrenzen auf die 20 neuesten */}
             {filteredAds.slice(0, 20).map((item) => {
               const isFav = favorites.includes(item.id);
-              // Bildquelle: Unterstütze nur URLs, Base64 wird durch Platzhalter ersetzt
-              let previewImage = undefined;
-              if (Array.isArray(item.images) && item.images.length > 0) {
-                if (item.images[0].startsWith('data:image')) {
-                  previewImage = undefined; // Base64 ausblenden
-                } else {
-                  previewImage = item.images[0];
-                }
-              } else if (typeof item.image === 'string' && item.image.length > 0) {
-                if (item.image.startsWith('data:image')) {
-                  previewImage = undefined;
-                } else {
-                  previewImage = item.image;
-                }
-              }
               return (
                 <AdCard
                   key={String(item.id)}
@@ -149,12 +113,11 @@ export const ListingGridFull = ({ category, subcategory, search, location, price
                   location={item.location}
                   category={item.category}
                   condition={item.condition}
-                  image={previewImage}
                   images={item.images}
                   isFavorite={isFav}
-                  onFavoriteToggle={() => handleFavoriteToggle(item.id)}
-                  disabled={favLoading}
-                  onClick={() => navigate(`/listing/${item.id}`)}
+                  description={item.description}
+                  userId={item.userId}
+                  createdAt={item.createdAt}
                 />
               );
             })}
