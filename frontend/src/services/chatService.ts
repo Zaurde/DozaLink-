@@ -1,4 +1,5 @@
-import { db } from '@/config/firebase';
+// Temporarily disabled: Firebase logic removed. Replace with FastAPI logic.
+/*
 import { collection, addDoc, query, where, orderBy, getDocs, Timestamp, writeBatch } from 'firebase/firestore';
 
 export interface Message {
@@ -125,4 +126,5 @@ export const chatService = {
 
     await batch.commit();
   }
-}; 
+};
+*/ 

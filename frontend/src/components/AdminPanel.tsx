@@ -18,7 +18,6 @@ import {
   DialogContent,
   DialogActions,
   TextField,
-  Grid as MuiGrid,
   Card,
   CardContent,
   Alert,
@@ -76,7 +75,6 @@ const AdminPanel: React.FC = () => {
   const [tabValue, setTabValue] = useState(0);
   const [users, setUsers] = useState<User[]>([]);
   const [listings, setListings] = useState<Listing[]>([]);
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [stats, setStats] = useState({
     totalUsers: 0,
@@ -98,7 +96,6 @@ const AdminPanel: React.FC = () => {
   }, []);
 
   const fetchData = async () => {
-    setLoading(true);
     try {
       // Fetch users
       const usersResponse = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/users`, {
@@ -127,13 +124,11 @@ const AdminPanel: React.FC = () => {
     } catch (err: any) {
       setError(err.message);
       showSnackbar(err.message, 'error');
-    } finally {
-      setLoading(false);
     }
   };
 
-  const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
-    setTabValue(newValue);
+  const handleTabChange = (_event: React.SyntheticEvent, value: number) => {
+    setTabValue(value);
   };
 
   const handleEditUser = (user: User) => {
@@ -273,6 +268,7 @@ const AdminPanel: React.FC = () => {
           onChange={handleTabChange}
           indicatorColor="primary"
           textColor="primary"
+          aria-label="admin tabs"
         >
           <Tab label="Benutzer" />
           <Tab label="Anzeigen" />

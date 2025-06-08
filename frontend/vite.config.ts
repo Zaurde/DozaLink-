@@ -1,7 +1,6 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import path from 'path'
-import type { Ad } from './services/adService'
 
 // https://vite.dev/config/
 export default defineConfig({

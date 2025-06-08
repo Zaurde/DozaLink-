@@ -1,7 +1,6 @@
 // frontend/src/context/AuthContext.tsx
 import { createContext, useContext, useState, useEffect } from 'react';
 import type { ReactNode } from 'react';
-import { login as apiLogin, register as apiRegister } from "../services/api";
 
 interface User {
   id: string;

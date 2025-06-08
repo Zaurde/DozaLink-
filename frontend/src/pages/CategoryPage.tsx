@@ -7,8 +7,6 @@ import type { Listing } from '../components/ListingGrid';
 
 // Typen für FilterPanel importieren oder erneut definieren
 
-type FilterValues = Record<string, any>;
-
 function FilterPanel({ filters, values, onChange }: {
   filters: FilterType[];
   values: Record<string, any>;

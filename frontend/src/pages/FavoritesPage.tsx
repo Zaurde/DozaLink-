@@ -1,13 +1,7 @@
-import { useEffect, useState } from 'react';
-import { Box, Typography, Container } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
-import { useFavorites } from '../components/FavoritesContext';
+import { Box, Container, Typography } from '@mui/material';
 import { ListingGridFull } from '../components/ListingGridFull';
 
 export const FavoritesPage = () => {
-  const { favorites } = useFavorites();
-  const navigate = useNavigate();
-
   return (
     <Box sx={{ width: '100%', py: { xs: 2, sm: 3, md: 4 } }}>
       <Container maxWidth="lg" sx={{ px: 3 }}>

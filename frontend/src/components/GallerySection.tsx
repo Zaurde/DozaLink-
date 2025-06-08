@@ -1,4 +1,4 @@
-import { Box, Typography, Card, CardContent, CardMedia, IconButton, Container } from '@mui/material';
+import { Box, Typography, Card, CardContent, IconButton } from '@mui/material';
 import NoImageIcon from '@mui/icons-material/Image';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';

@@ -1,4 +1,5 @@
-import { db } from '@/config/firebase';
+// Temporarily disabled: Firebase logic removed. Replace with FastAPI logic.
+/*
 import { collection, addDoc, deleteDoc, doc, getDocs, query, where } from 'firebase/firestore';
 
 export interface Favorite {
@@ -37,4 +38,5 @@ export const favoriteService = {
       await deleteDoc(doc(db, 'favorites', snapshot.docs[0].id));
     }
   }
-}; 
+};
+*/ 

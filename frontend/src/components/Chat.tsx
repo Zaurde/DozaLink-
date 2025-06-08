@@ -11,7 +11,6 @@ import {
   ListItemButton,
   ListItemAvatar,
   ListItemText,
-  Divider,
   CircularProgress,
   Badge,
 } from '@mui/material';

@@ -3,11 +3,9 @@ import { Box, Card, Typography, Link, Chip, Stack, Drawer, IconButton, useTheme,
 import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
-import MenuBookIcon from '@mui/icons-material/MenuBook';
 import CategoryIcon from '@mui/icons-material/Category';
 import VolunteerActivismIcon from '@mui/icons-material/VolunteerActivism';
 import CloseIcon from '@mui/icons-material/Close';
-import TipsGuide from './TipsGuide';
 
 interface SidebarCardProps {
   icon: React.ReactNode;
@@ -81,8 +79,6 @@ const SidebarCard = ({ icon, title, description, linkText, link, tags }: Sidebar
 );
 
 const SidebarContent = () => {
-  const [showTips, setShowTips] = React.useState(false);
-
   return (
     <Stack spacing={2}>
       <SidebarCard

@@ -1,12 +1,11 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { ThemeProvider, CssBaseline, Container, Box, useTheme, useMediaQuery, Grid, IconButton, TextField, InputAdornment, MenuItem, Button, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
+import { ThemeProvider, CssBaseline, Box } from '@mui/material';
 import { CategoryCards } from './components/CategoryCards';
 import { ListingGridFull } from './components/ListingGridFull';
 import { BottomNav } from './components/BottomNav';
 import ListingDetail from './components/ListingDetail';
 import { FavoritesPage } from './pages/FavoritesPage';
 import { CategoryPage } from './pages/CategoryPage';
-import { ChatPage } from './pages/ChatPage';
 import { useState, useEffect } from 'react';
 import { ListingForm } from "./components/ListingForm";
 import { FavoritesProvider } from './components/FavoritesContext';

@@ -1,13 +1,10 @@
-import { Box, Typography, Paper, Stack, Popover, List, ListItemButton, ListItemText } from '@mui/material';
-import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
+import { Box, Typography, Paper, Stack } from '@mui/material';
 import HomeIcon from '@mui/icons-material/Home';
 import CheckroomIcon from '@mui/icons-material/Checkroom';
-import SmartphoneIcon from '@mui/icons-material/Smartphone';
 import ChildCareIcon from '@mui/icons-material/ChildCare';
 import PetsIcon from '@mui/icons-material/Pets';
 import BuildIcon from '@mui/icons-material/Build';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 export const categories = [
@@ -153,7 +150,7 @@ export const CategoriesGrid = ({ activeCategory, onCategorySelect }: CategoriesG
           '&::-webkit-scrollbar-thumb': { bgcolor: '#e2e8f0', borderRadius: 4 },
         }}
       >
-        {categories.map((cat, idx) => (
+        {categories.map((cat) => (
           <Box
             key={cat.name}
             sx={{

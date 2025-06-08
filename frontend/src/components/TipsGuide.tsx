@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Box,
   Typography,
@@ -8,7 +7,6 @@ import {
   Avatar,
   Divider,
   useTheme,
-  Grid,
   Chip
 } from "@mui/material";
 import {
@@ -97,9 +95,9 @@ export default function TipsGuide() {
 
       {/* Tipps für Käufer */}
       <Typography variant="h5" fontWeight={700} sx={{ mb: 2, color: theme.palette.primary.main }}>👤 Für Käufer</Typography>
-      <Grid container spacing={2} sx={{ mb: 4 }}>
+      <Stack direction="row" spacing={2} sx={{ mb: 4 }}>
         {tipsKaeufer.map((tip, i) => (
-          <Grid item xs={12} sm={6} key={i}>
+          <Box key={i} sx={{ flex: 1 }}>
             <Card variant="outlined" sx={{ borderRadius: 3, height: '100%' }}>
               <CardContent>
                 <Stack direction="row" spacing={2} alignItems="flex-start">
@@ -113,15 +111,15 @@ export default function TipsGuide() {
                 </Stack>
               </CardContent>
             </Card>
-          </Grid>
+          </Box>
         ))}
-      </Grid>
+      </Stack>
 
       {/* Tipps für Verkäufer */}
       <Typography variant="h5" fontWeight={700} sx={{ mb: 2, color: theme.palette.secondary.main }}>🧾 Für Verkäufer</Typography>
-      <Grid container spacing={2} sx={{ mb: 4 }}>
+      <Stack direction="row" spacing={2} sx={{ mb: 4 }}>
         {tipsVerkaeufer.map((tip, i) => (
-          <Grid item xs={12} sm={6} key={i}>
+          <Box key={i} sx={{ flex: 1 }}>
             <Card variant="outlined" sx={{ borderRadius: 3, height: '100%' }}>
               <CardContent>
                 <Stack direction="row" spacing={2} alignItems="flex-start">
@@ -135,9 +133,9 @@ export default function TipsGuide() {
                 </Stack>
               </CardContent>
             </Card>
-          </Grid>
+          </Box>
         ))}
-      </Grid>
+      </Stack>
 
       {/* Sicherheitstipps */}
       <Typography variant="h6" fontWeight={700} sx={{ mt: 5, mb: 2, color: theme.palette.success.main }}>🔐 Zusätzliche Sicherheitstipps</Typography>

@@ -9,7 +9,6 @@ import {
 } from '@mui/material';
 import { useAuth } from '../context/AuthContext';
 import { useSnackbar } from '../context/SnackbarContext';
-import { login } from "../services/api";
 
 export const LoginForm = () => {
   const { login: doLogin } = useAuth();

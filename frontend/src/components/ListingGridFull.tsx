@@ -1,7 +1,6 @@
 import { Box, Typography, Skeleton, Alert } from '@mui/material';
 import SentimentDissatisfiedIcon from '@mui/icons-material/SentimentDissatisfied';
 import { useEffect, useState } from 'react';
-import { useFavorites } from '../hooks/useFavorites';
 import { adService } from '../services/adService';
 import AdCard from './AdCard';
 import Snackbar from '@mui/material/Snackbar';
@@ -18,7 +17,6 @@ export const ListingGridFull = ({ category, subcategory, search, location, price
   const [ads, setAds] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const { favorites } = useFavorites();
   const [snackbar, setSnackbar] = useState('');
 
   useEffect(() => {
@@ -102,25 +100,21 @@ export const ListingGridFull = ({ category, subcategory, search, location, price
             width: '100%',
           }}>
             {/* Anzeigen begrenzen auf die 20 neuesten */}
-            {filteredAds.slice(0, 20).map((item) => {
-              const isFav = favorites.includes(item.id);
-              return (
-                <AdCard
-                  key={String(item.id)}
-                  id={item.id}
-                  title={item.title}
-                  price={item.price}
-                  location={item.location}
-                  category={item.category}
-                  condition={item.condition}
-                  images={item.images}
-                  isFavorite={isFav}
-                  description={item.description}
-                  userId={item.userId}
-                  createdAt={item.createdAt}
-                />
-              );
-            })}
+            {filteredAds.slice(0, 20).map((item) => (
+              <AdCard
+                key={String(item.id)}
+                id={item.id}
+                title={item.title}
+                price={item.price}
+                location={item.location}
+                category={item.category}
+                condition={item.condition}
+                images={item.images}
+                description={item.description}
+                userId={item.userId}
+                createdAt={item.createdAt}
+              />
+            ))}
           </Box>
         </Box>
       )}

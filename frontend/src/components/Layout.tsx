@@ -1,15 +1,10 @@
-import { Box, Typography, Button, IconButton, TextField, MenuItem, InputAdornment } from '@mui/material';
+import { Box, Typography, Button, IconButton } from '@mui/material';
 import { useNavigate, Link } from 'react-router-dom';
-import { useAuth } from '../hooks/useAuth';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import PersonIcon from '@mui/icons-material/Person';
-import AddIcon from '@mui/icons-material/Add';
-import SearchIcon from '@mui/icons-material/Search';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
-import CategoryIcon from '@mui/icons-material/Category';
-import MenuIcon from '@mui/icons-material/Menu';
+import { useAuth } from '../context/AuthContext';
 import { DrawerMenu } from './DrawerMenu';
 import { useState } from 'react';
+import MenuIcon from '@mui/icons-material/Menu';
+import PersonIcon from '@mui/icons-material/Person';
 
 interface LayoutProps {
   children: React.ReactNode;

@@ -1,12 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import {
   Box,
   Typography,
   Paper,
   Button,
-  Grid,
-  IconButton,
   Dialog,
   DialogTitle,
   DialogContent,
@@ -17,38 +15,24 @@ import {
   Stack,
   Divider,
   Container,
-  Snackbar,
-  Avatar
+  Snackbar
 } from '@mui/material';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Pagination } from 'swiper/modules';
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import MessageIcon from '@mui/icons-material/Message';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import ImageIcon from '@mui/icons-material/Image';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import PersonIcon from '@mui/icons-material/Person';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import NoImageIcon from '@mui/icons-material/Image';
-import { useAuth } from '../hooks/useAuth';
-import { useFavorites } from '../hooks/useFavorites';
+import { useAuth } from '../context/AuthContext';
 import { adService } from '../services/adService';
 import type { Ad } from '../services/adService';
-import { chatService } from '../services/chatService';
 import { formatPrice } from '../utils/formatPrice';
-import { formatDate } from '../utils/formatDate';
 
 const ListingDetail = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { user } = useAuth();
-  const { favorites, toggleFavorite, isFavorite } = useFavorites();
   const [ad, setAd] = useState<Ad | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -78,31 +62,16 @@ const ListingDetail = () => {
     loadAd();
   }, [id]);
 
-  const handleToggleFavorite = async () => {
-    if (!user) {
-      setSnackbar('Bitte melde dich an, um Favoriten zu speichern');
-      return;
-    }
-    if (!ad?.id) return;
-
-    try {
-      await toggleFavorite(ad.id);
-    } catch (err) {
-      console.error('Error toggling favorite:', err);
-      setSnackbar('Fehler beim Speichern des Favoriten');
-    }
-  };
-
   const handleSendMessage = async () => {
     if (!user || !ad) return;
     setSendingMessage(true);
     try {
-      await chatService.sendMessage({
-        senderId: user.id,
-        receiverId: ad.userId,
-        listingId: ad.id!,
-        content: message
-      });
+      // await chatService.sendMessage({
+      //   senderId: user.id,
+      //   receiverId: ad.userId,
+      //   listingId: ad.id!,
+      //   content: message
+      // });
       setMessageDialogOpen(false);
       setMessage('');
       setSnackbar('Nachricht gesendet');
@@ -141,32 +110,20 @@ const ListingDetail = () => {
           Zurück
         </Button>
 
-        <Grid container spacing={4}>
-          <Grid item xs={12} md={8}>
+        <Box display="flex">
+          <Box flex={8}>
             <Paper sx={{ p: 2, mb: 2 }}>
               {ad.images && ad.images.length > 0 ? (
-                <Swiper
-                  modules={[Navigation, Pagination]}
-                  navigation
-                  pagination={{ clickable: true }}
-                  spaceBetween={0}
-                  slidesPerView={1}
-                >
-                  {ad.images.map((image, index) => (
-                    <SwiperSlide key={index}>
-              <Box
-                component="img"
-                        src={image}
-                        alt={`${ad.title} - Bild ${index + 1}`}
-                        sx={{
-                          width: '100%',
-                          height: 400,
-                          objectFit: 'contain'
-                        }}
-              />
-                    </SwiperSlide>
-                  ))}
-                </Swiper>
+                <Box
+                  component="img"
+                  src={ad.images[0]}
+                  alt={ad.title}
+                  sx={{
+                    width: '100%',
+                    height: 400,
+                    objectFit: 'contain'
+                  }}
+                />
               ) : (
                 <Box
                   sx={{
@@ -206,9 +163,9 @@ const ListingDetail = () => {
                 {ad.description}
               </Typography>
           </Paper>
-          </Grid>
+          </Box>
 
-          <Grid item xs={12} md={4}>
+          <Box flex={4}>
             <Paper sx={{ p: 3 }}>
               <Stack spacing={2}>
               <Button 
@@ -220,14 +177,6 @@ const ListingDetail = () => {
               >
                 Nachricht senden
               </Button>
-                <Button
-                  variant="outlined"
-                  color={isFavorite(ad.id!) ? 'secondary' : 'primary'}
-                  startIcon={isFavorite(ad.id!) ? <FavoriteIcon /> : <FavoriteBorderIcon />}
-                  onClick={handleToggleFavorite}
-                >
-                  {isFavorite(ad.id!) ? 'Aus Favoriten entfernen' : 'Zu Favoriten hinzufügen'}
-                </Button>
                 {user && user.id === ad.userId && (
                   <>
                     <Button
@@ -253,8 +202,8 @@ const ListingDetail = () => {
                 )}
             </Stack>
           </Paper>
-          </Grid>
-        </Grid>
+          </Box>
+        </Box>
       </Box>
 
       <Dialog
