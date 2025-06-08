@@ -45,5 +45,5 @@ export async function login(email: string, password: string) {
     body: JSON.stringify({ email, password }),
   });
   if (!res.ok) throw new Error(await res.text());
-  return res.json(); // { access_token, token_type }
+  return res.json();
 }

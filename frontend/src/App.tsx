@@ -10,7 +10,7 @@ import { ChatPage } from './pages/ChatPage';
 import { useState, useEffect } from 'react';
 import { ListingForm } from "./components/ListingForm";
 import { FavoritesProvider } from './components/FavoritesContext';
-import { AuthProvider } from './hooks/useAuth';
+import { AuthProvider } from './context/AuthContext';
 import { Layout } from './components/Layout';
 import { Login } from './components/Login';
 import { Profile } from './components/Profile';
@@ -30,6 +30,8 @@ import ListingList from "./components/ListingList";
 import { LoginForm } from "./components/LoginForm";
 import RegisterForm from "./components/RegisterForm";
 import { ProtectedRoute } from "./components/ProtectedRoute";
+import { Chat } from './components/Chat';
+import AdminPanel from './components/AdminPanel';
 
 function HomePage() {
   const [category] = useState('');
@@ -188,13 +190,17 @@ function App() {
                   <Route path="/login" element={<Login />} />
                   <Route path="/register" element={<RegisterForm />} />
                   <Route path="/profile" element={<Profile />} />
+                  <Route path="/chat" element={
+                    <ProtectedRoute>
+                      <Chat />
+                    </ProtectedRoute>
+                  } />
                   <Route path="/create-listing" element={
                     <ProtectedRoute>
                       <CreateListing />
                     </ProtectedRoute>
                   } />
                   <Route path="/edit-listing/:id" element={<EditListing />} />
-                  <Route path="/chat" element={<ChatPage />} />
                   <Route path="/search" element={<ListingGridFull />} />
                   <Route path="/kategorien/elektronik" element={<ElektronikPage />} />
                   <Route path="/kategorien/:slug" element={<CategoryPage />} />
@@ -203,6 +209,11 @@ function App() {
                   <Route path="/new" element={<ListingForm />} />
                   <Route path="/backend-demo" element={<BackendDemo />} />
                   <Route path="/login-form" element={<LoginForm />} />
+                  <Route path="/admin" element={
+                    <ProtectedRoute>
+                      <AdminPanel />
+                    </ProtectedRoute>
+                  } />
                   <Route path="*" element={<div>404 - Page Not Found</div>} />
                 </Routes>
               </Layout>

@@ -1,7 +1,3 @@
-import { db } from '@/config/firebase';
-import { collection, addDoc, getDoc, getDocs, doc, updateDoc, deleteDoc, query, where, Timestamp } from 'firebase/firestore';
-import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-
 export interface Ad {
   id?: string;
   title: string;
@@ -11,71 +7,70 @@ export interface Ad {
   location: string;
   images: string[]; // URLs
   userId: string;
-  createdAt: Date | Timestamp;
+  createdAt: string; // ISO string from backend
   condition: string;
 }
 
-const storage = getStorage();
+const API_URL = import.meta.env.VITE_API_URL;
 
 export const adService = {
-  async uploadImage(file: File): Promise<string> {
-    const storageRef = ref(storage, `ads/${Date.now()}_${file.name}`);
-    await uploadBytes(storageRef, file);
-    return getDownloadURL(storageRef);
-  },
-
-  async createAd(ad: Omit<Ad, 'id' | 'createdAt'>): Promise<string> {
-    const docRef = await addDoc(collection(db, 'ads'), {
-      ...ad,
-      createdAt: Timestamp.now(),
-    });
-    return docRef.id;
+  async getAllAds(): Promise<Ad[]> {
+    const res = await fetch(`${API_URL}/api/listings`);
+    if (!res.ok) throw new Error('Fehler beim Laden der Anzeigen');
+    return res.json();
   },
 
   async getAdById(id: string): Promise<Ad | null> {
-    const docRef = doc(db, 'ads', id);
-    const snap = await getDoc(docRef);
-    if (!snap.exists()) return null;
-    const data = snap.data();
-    return {
-      id: snap.id,
-      ...data,
-      createdAt: data.createdAt?.toDate ? data.createdAt.toDate() : new Date(data.createdAt),
-    } as Ad;
+    const res = await fetch(`${API_URL}/api/listings/${id}`);
+    if (!res.ok) return null;
+    return res.json();
   },
 
-  async getAdsByUser(userId: string): Promise<Ad[]> {
-    const q = query(collection(db, 'ads'), where('userId', '==', userId));
-    const snap = await getDocs(q);
-    return snap.docs.map(doc => {
-      const data = doc.data();
-      return {
-        id: doc.id,
-        ...data,
-        createdAt: data.createdAt?.toDate ? data.createdAt.toDate() : new Date(data.createdAt),
-      } as Ad;
+  async createAd(ad: Omit<Ad, 'id' | 'createdAt'>, token: string): Promise<Ad> {
+    const res = await fetch(`${API_URL}/api/listings`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify(ad),
     });
+    if (!res.ok) throw new Error('Fehler beim Erstellen der Anzeige');
+    return res.json();
   },
 
-  async getAllAds(): Promise<Ad[]> {
-    const snap = await getDocs(collection(db, 'ads'));
-    return snap.docs.map(doc => {
-      const data = doc.data();
-      return {
-        id: doc.id,
-        ...data,
-        createdAt: data.createdAt?.toDate ? data.createdAt.toDate() : new Date(data.createdAt),
-      } as Ad;
+  async updateAd(id: string, data: Partial<Ad>, token: string) {
+    const res = await fetch(`${API_URL}/api/listings/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify(data),
     });
+    if (!res.ok) throw new Error('Fehler beim Aktualisieren der Anzeige');
+    return res.json();
   },
 
-  async updateAd(id: string, data: Partial<Ad>) {
-    const docRef = doc(db, 'ads', id);
-    await updateDoc(docRef, data);
+  async deleteAd(id: string, token: string) {
+    const res = await fetch(`${API_URL}/api/listings/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      },
+    });
+    if (!res.ok) throw new Error('Fehler beim Löschen der Anzeige');
   },
 
-  async deleteAd(id: string) {
-    const docRef = doc(db, 'ads', id);
-    await deleteDoc(docRef);
+  async uploadImage(file: File): Promise<string> {
+    const formData = new FormData();
+    formData.append("file", file);
+    const res = await fetch(`${API_URL}/api/upload-image`, {
+      method: "POST",
+      body: formData,
+    });
+    if (!res.ok) throw new Error("Fehler beim Hochladen des Bildes");
+    const data = await res.json();
+    return data.url;
   },
 }; 

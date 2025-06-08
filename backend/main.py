@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException, Depends, Body, status
+from fastapi import FastAPI, HTTPException, Depends, Body, status, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
 from sqlmodel import SQLModel, Field, Session, create_engine, select
 from typing import Optional, List
@@ -6,6 +6,8 @@ from passlib.context import CryptContext
 from jose import jwt, JWTError
 from fastapi.security import OAuth2PasswordBearer
 from datetime import timedelta, datetime
+import os
+from fastapi.responses import JSONResponse
 
 app = FastAPI(
     docs_url="/docs",
@@ -133,3 +135,15 @@ def read_users_me(current_user: User = Depends(get_current_user)):
 @app.get("/")
 def root():
     return {"message": "Backend läuft!"}
+
+UPLOAD_DIR = "uploads"
+os.makedirs(UPLOAD_DIR, exist_ok=True)
+
+@app.post("/api/upload-image")
+async def upload_image(file: UploadFile = File(...)):
+    file_location = os.path.join(UPLOAD_DIR, file.filename)
+    with open(file_location, "wb") as f:
+        f.write(await file.read())
+    # Optional: Rückgabe einer URL, unter der das Bild erreichbar ist
+    url = f"/uploads/{file.filename}"
+    return {"url": url}

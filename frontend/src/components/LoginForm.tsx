@@ -7,18 +7,18 @@ import {
   Link,
   Alert,
 } from '@mui/material';
-import { useAuth } from '../hooks/useAuth';
+import { useAuth } from '../context/AuthContext';
 import { useSnackbar } from '../context/SnackbarContext';
 import { login } from "../services/api";
 
 export const LoginForm = () => {
-  const navigate = useNavigate();
   const { login: doLogin } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const { showSnackbar } = useSnackbar();
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -26,12 +26,11 @@ export const LoginForm = () => {
     setLoading(true);
 
     try {
-      const data = await login(email, password);
-      doLogin(data.access_token, email);
+      await doLogin(email, password);
       showSnackbar('Erfolgreich eingeloggt!', 'success');
       navigate('/');
     } catch (err: any) {
-      setError(err.message);
+      setError(err.message || "Login fehlgeschlagen");
     } finally {
       setLoading(false);
     }
