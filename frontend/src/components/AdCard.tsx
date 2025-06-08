@@ -53,9 +53,6 @@ const AdCard: React.FC<AdCardProps> = ({ id, title, price, location, images }) =
         cursor: 'default',
         display: 'flex',
         flexDirection: 'column',
-        '&:hover': {
-          boxShadow: '0 4px 12px rgba(0,0,0,0.10)',
-        },
       }}
     >
       {/* Bildbereich mit Avito-Blur-Background und Icons */}
