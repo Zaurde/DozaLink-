@@ -44,7 +44,7 @@ const AdCard: React.FC<AdCardProps> = ({ id, title, price, location, images }) =
         height: 354,
         minHeight: 354,
         maxHeight: 354,
-        bgcolor: '#fcfcfc',
+        bgcolor: '#f8fafc',
         borderRadius: '12px',
         boxShadow: 'none',
         transition: 'box-shadow 0.18s',
