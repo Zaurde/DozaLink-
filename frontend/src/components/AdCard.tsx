@@ -44,7 +44,7 @@ const AdCard: React.FC<AdCardProps> = ({ id, title, price, location, images }) =
         height: 354,
         minHeight: 354,
         maxHeight: 354,
-        bgcolor: '#fff',
+        bgcolor: '#fcfcfc',
         borderRadius: '12px',
         boxShadow: 'none',
         transition: 'box-shadow 0.18s',
@@ -150,7 +150,7 @@ const AdCard: React.FC<AdCardProps> = ({ id, title, price, location, images }) =
         </Menu>
       </Box>
       {/* Card Body */}
-      <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', px: 1.5, pt: 1.5, pb: 1, gap: 0.5, alignItems: 'flex-start', background: 'transparent', boxShadow: 'none', border: 'none' }}>
+      <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', px: 1.5, pt: 1, pb: 1, gap: 0.3, alignItems: 'flex-start', background: 'transparent', boxShadow: 'none', border: 'none', minHeight: 0, justifyContent: 'center' }}>
         <Typography
           variant="subtitle1"
           component={RouterLink}
