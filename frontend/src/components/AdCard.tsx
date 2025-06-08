@@ -45,7 +45,7 @@ const AdCard: React.FC<AdCardProps> = ({ id, title, price, location, images }) =
         minHeight: 354,
         maxHeight: 354,
         bgcolor: '#fff',
-        borderRadius: 3,
+        borderRadius: '12px',
         boxShadow: 'none',
         transition: 'box-shadow 0.18s',
         fontFamily: 'Inter, Roboto, system-ui, Arial, sans-serif',
@@ -65,8 +65,8 @@ const AdCard: React.FC<AdCardProps> = ({ id, title, price, location, images }) =
           width: '100%',
           height: 236,
           overflow: 'hidden',
-          borderTopLeftRadius: 3,
-          borderTopRightRadius: 3,
+          borderTopLeftRadius: '12px',
+          borderTopRightRadius: '12px',
           bgcolor: '#fff',
         }}
         onMouseEnter={handleMouseEnter}
@@ -85,6 +85,8 @@ const AdCard: React.FC<AdCardProps> = ({ id, title, price, location, images }) =
             filter: 'blur(18px) brightness(1.1) opacity(0.7)',
             zIndex: 1,
             transition: 'opacity 0.4s cubic-bezier(.4,0,.2,1)',
+            borderTopLeftRadius: '12px',
+            borderTopRightRadius: '12px',
           }}
         />
         {/* Main Image */}
@@ -98,8 +100,8 @@ const AdCard: React.FC<AdCardProps> = ({ id, title, price, location, images }) =
             height: '100%',
             objectFit: 'contain',
             zIndex: 2,
-            borderTopLeftRadius: 12,
-            borderTopRightRadius: 12,
+            borderTopLeftRadius: '12px',
+            borderTopRightRadius: '12px',
             display: 'block',
             transition: 'opacity 0.4s cubic-bezier(.4,0,.2,1)',
           }}
