@@ -21,7 +21,7 @@ const AdCard: React.FC<AdCardProps> = ({ id, title, price, location, images, cat
   };
   const handleMenuClose = () => setAnchorEl(null);
 
-  // Avito-like image hover: Bildfläche in Zonen teilen, Maus steuert Bild
+  // Bildwechsel per Mausbewegung: Bildfläche in Zonen teilen, Maus steuert Bild
   const [activeIdx, setActiveIdx] = React.useState(0);
   const imgs = images && images.length > 0 ? images : ['/placeholder.jpg'];
 
@@ -61,7 +61,7 @@ const AdCard: React.FC<AdCardProps> = ({ id, title, price, location, images, cat
         flexDirection: 'column',
       }}
     >
-      {/* Bildbereich mit Avito-Blur-Background und Icons */}
+      {/* Bildbereich mit Blur-Background und Icons */}
       <Box
         sx={{
           position: 'relative',
