@@ -6,8 +6,10 @@ export interface Listing {
 
 // ... (getListings bleibt wie gehabt)
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 export async function createListing(listing: Omit<Listing, "id">): Promise<Listing> {
-  const res = await fetch("http://localhost:8000/api/listings", {
+  const res = await fetch(`${API_URL}/api/listings`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(listing),
