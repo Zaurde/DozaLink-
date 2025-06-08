@@ -21,22 +21,21 @@ const AdCard: React.FC<AdCardProps> = ({ id, title, price, location, images, cat
   };
   const handleMenuClose = () => setAnchorEl(null);
 
-  // Avito-like image carousel on hover
+  // Avito-like image hover: Bildfläche in Zonen teilen, Maus steuert Bild
   const [activeIdx, setActiveIdx] = React.useState(0);
-  const intervalRef = React.useRef<number | null>(null);
   const imgs = images && images.length > 0 ? images : ['/placeholder.jpg'];
 
-  const handleMouseEnter = () => {
+  // Handler für Mausbewegung über das Bild
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (imgs.length <= 1) return;
-    intervalRef.current = window.setInterval(() => {
-      setActiveIdx(idx => (idx + 1) % imgs.length);
-    }, 1200);
+    const rect = (e.currentTarget as HTMLDivElement).getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const zoneWidth = rect.width / imgs.length;
+    const idx = Math.min(imgs.length - 1, Math.floor(x / zoneWidth));
+    setActiveIdx(idx);
   };
-  const handleMouseLeave = () => {
-    if (intervalRef.current) window.clearInterval(intervalRef.current);
-    setActiveIdx(0);
-  };
-  React.useEffect(() => () => { if (intervalRef.current) window.clearInterval(intervalRef.current); }, []);
+  // Beim Verlassen zurück auf erstes Bild
+  const handleMouseLeave = () => setActiveIdx(0);
 
   // Animation for fade
   const [fade, setFade] = React.useState(true);
@@ -45,12 +44,12 @@ const AdCard: React.FC<AdCardProps> = ({ id, title, price, location, images, cat
   return (
     <Box
       sx={{
-        width: 236,
-        minWidth: 236,
-        maxWidth: 236,
-        height: 354,
-        minHeight: 354,
-        maxHeight: 354,
+        width: { xs: '100%', md: 236 },
+        minWidth: { xs: 0, md: 236 },
+        maxWidth: { xs: '100%', md: 236 },
+        height: { xs: 'auto', md: 354 },
+        minHeight: { xs: 0, md: 354 },
+        maxHeight: { xs: 'none', md: 354 },
         bgcolor: '#f8fafc',
         borderRadius: '12px',
         boxShadow: 'none',
@@ -67,13 +66,14 @@ const AdCard: React.FC<AdCardProps> = ({ id, title, price, location, images, cat
         sx={{
           position: 'relative',
           width: '100%',
-          height: 236,
+          height: { xs: 'auto', md: 236 },
+          aspectRatio: { xs: '1 / 1', md: 'unset' },
           overflow: 'hidden',
           borderTopLeftRadius: '12px',
           borderTopRightRadius: '12px',
           bgcolor: '#fff',
         }}
-        onMouseEnter={handleMouseEnter}
+        onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
       >
         {/* Kategorie-Badge */}
