@@ -5,7 +5,7 @@ from typing import Optional, List
 from passlib.context import CryptContext
 from jose import jwt, JWTError
 from fastapi.security import OAuth2PasswordBearer
-from datetime import timedelta
+from datetime import timedelta, datetime
 
 app = FastAPI(
     docs_url="/docs",
@@ -129,3 +129,7 @@ def get_current_user(token: str = Depends(oauth2_scheme)):
 @app.get("/api/me")
 def read_users_me(current_user: User = Depends(get_current_user)):
     return {"email": current_user.email}
+
+@app.get("/")
+def root():
+    return {"message": "Backend läuft!"}
