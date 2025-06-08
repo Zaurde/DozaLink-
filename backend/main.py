@@ -5,6 +5,7 @@ from typing import Optional, List
 from passlib.context import CryptContext
 from jose import jwt, JWTError
 from fastapi.security import OAuth2PasswordBearer
+from datetime import timedelta
 
 app = FastAPI(
     docs_url="/docs",
