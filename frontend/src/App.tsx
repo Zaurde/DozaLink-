@@ -9,7 +9,7 @@ import { CategoryPage } from './pages/CategoryPage';
 import { useState, useEffect } from 'react';
 import { ListingForm } from "./components/ListingForm";
 import { FavoritesProvider } from './components/FavoritesContext';
-import { AuthProvider } from './context/AuthContext';
+import { AuthProvider, useAuth } from './context/AuthContext';
 import { Layout } from './components/Layout';
 import { Login } from './components/Login';
 import { Profile } from './components/Profile';
@@ -33,6 +33,7 @@ import { Chat } from './components/Chat';
 import AdminPanel from './components/AdminPanel';
 
 function HomePage() {
+  const { token } = useAuth();
   const [category] = useState('');
   const [location] = useState('');
   const [priceMin] = useState('');
@@ -46,14 +47,14 @@ function HomePage() {
     const fetchAds = async () => {
       setLoadingAds(true);
       try {
-        const allAds = await adService.getAllAds();
+        const allAds = await adService.getAllAds(token);
         setAds(allAds);
       } finally {
         setLoadingAds(false);
       }
     };
     fetchAds();
-  }, []);
+  }, [token]);
 
   // Hilfsfunktionen für Bereiche
   const latestAds = [...ads]

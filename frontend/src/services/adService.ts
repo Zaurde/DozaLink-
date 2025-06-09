@@ -14,16 +14,28 @@ export interface Ad {
 const API_URL = import.meta.env.VITE_API_URL;
 
 export const adService = {
-  async getAllAds(): Promise<Ad[]> {
-    const res = await fetch(`${API_URL}/api/listings`);
+  async getAllAds(token?: string): Promise<Ad[]> {
+    const headers: Record<string, string> = {};
+    if (token) headers['Authorization'] = `Bearer ${token}`;
+    const res = await fetch(`${API_URL}/api/listings`, { headers });
     if (!res.ok) throw new Error('Fehler beim Laden der Anzeigen');
-    return res.json();
+    if (res.headers.get('content-type')?.includes('application/json')) {
+      return res.json();
+    } else {
+      throw new Error('Server returned non-JSON response');
+    }
   },
 
-  async getAdById(id: string): Promise<Ad | null> {
-    const res = await fetch(`${API_URL}/api/listings/${id}`);
+  async getAdById(id: string, token?: string): Promise<Ad | null> {
+    const headers: Record<string, string> = {};
+    if (token) headers['Authorization'] = `Bearer ${token}`;
+    const res = await fetch(`${API_URL}/api/listings/${id}`, { headers });
     if (!res.ok) return null;
-    return res.json();
+    if (res.headers.get('content-type')?.includes('application/json')) {
+      return res.json();
+    } else {
+      throw new Error('Server returned non-JSON response');
+    }
   },
 
   async createAd(ad: Omit<Ad, 'id' | 'createdAt'>, token: string): Promise<Ad> {
@@ -36,7 +48,11 @@ export const adService = {
       body: JSON.stringify(ad),
     });
     if (!res.ok) throw new Error('Fehler beim Erstellen der Anzeige');
-    return res.json();
+    if (res.headers.get('content-type')?.includes('application/json')) {
+      return res.json();
+    } else {
+      throw new Error('Server returned non-JSON response');
+    }
   },
 
   async updateAd(id: string, data: Partial<Ad>, token: string) {
@@ -49,7 +65,11 @@ export const adService = {
       body: JSON.stringify(data),
     });
     if (!res.ok) throw new Error('Fehler beim Aktualisieren der Anzeige');
-    return res.json();
+    if (res.headers.get('content-type')?.includes('application/json')) {
+      return res.json();
+    } else {
+      throw new Error('Server returned non-JSON response');
+    }
   },
 
   async deleteAd(id: string, token: string) {
@@ -70,7 +90,11 @@ export const adService = {
       body: formData,
     });
     if (!res.ok) throw new Error("Fehler beim Hochladen des Bildes");
-    const data = await res.json();
-    return data.url;
+    if (res.headers.get('content-type')?.includes('application/json')) {
+      const data = await res.json();
+      return data.url;
+    } else {
+      throw new Error('Server returned non-JSON response');
+    }
   },
 }; 

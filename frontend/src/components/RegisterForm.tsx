@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import {
   Box,
   TextField,
@@ -7,31 +7,43 @@ import {
   Link,
   Alert,
 } from '@mui/material';
+import { useAuth } from '../context/AuthContext';
+import { useSnackbar } from '../context/SnackbarContext';
 import { register } from "../services/api";
 
 export default function RegisterForm() {
+  const { login } = useAuth();
+  const { showSnackbar } = useSnackbar();
+  const navigate = useNavigate();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
-    setSuccess(false);
+    setLoading(true);
 
     if (password !== confirmPassword) {
       setError('Die Passwörter stimmen nicht überein');
+      setLoading(false);
       return;
     }
 
     try {
       await register(email, password);
-      setSuccess(true);
+      // Automatically login after successful registration
+      await login(email, password);
+      showSnackbar('Registrierung erfolgreich! Du wurdest automatisch eingeloggt.', 'success');
+      navigate('/');
     } catch (err: any) {
       setError(err.message);
+      showSnackbar(err.message, 'error');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -40,12 +52,6 @@ export default function RegisterForm() {
       {error && (
         <Alert severity="error" sx={{ mb: 2 }}>
           {error}
-        </Alert>
-      )}
-
-      {success && (
-        <Alert severity="success" sx={{ mb: 2 }}>
-          Registrierung erfolgreich!
         </Alert>
       )}
 
@@ -105,8 +111,9 @@ export default function RegisterForm() {
         fullWidth
         variant="contained"
         sx={{ mt: 3, mb: 2, py: 1.5 }}
+        disabled={loading}
       >
-        Registrieren
+        {loading ? 'Wird registriert...' : 'Registrieren'}
       </Button>
       <Box sx={{ textAlign: 'center' }}>
         <Link component={RouterLink} to="/login" variant="body2">

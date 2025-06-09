@@ -1,6 +1,4 @@
-// frontend/src/context/AuthContext.tsx
 import { createContext, useContext, useState, useEffect } from 'react';
-import type { ReactNode } from 'react';
 
 interface User {
   id: string;
@@ -13,90 +11,99 @@ interface AuthContextType {
   user: User | null;
   token: string | null;
   login: (email: string, password: string) => Promise<void>;
-  register: (email: string, password: string, name: string) => Promise<void>;
   logout: () => void;
   updateUser: (user: User) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
+function parseJwt(token: string): any {
+  try {
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const jsonPayload = decodeURIComponent(
+      atob(base64)
+        .split('')
+        .map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+        .join('')
+    );
+    return JSON.parse(jsonPayload);
+  } catch {
+    return null;
+  }
+}
+
+export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [token, setToken] = useState<string | null>(null);
+  const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
-    // Beim Start der App: Token und User aus dem LocalStorage laden
     const storedToken = localStorage.getItem('token');
-    const storedUser = localStorage.getItem('user');
-    if (storedToken && storedUser) {
+    if (storedToken) {
       setToken(storedToken);
-      setUser(JSON.parse(storedUser));
+      const payload = parseJwt(storedToken);
+      if (payload && payload.sub) {
+        // Fetch user details from backend
+        fetch(`${import.meta.env.VITE_API_URL}/api/users/me`, {
+          headers: {
+            'Authorization': `Bearer ${storedToken}`
+          }
+        })
+        .then(res => res.json())
+        .then(userData => setUser(userData))
+        .catch(() => {
+          // If fetch fails, clear invalid token
+          localStorage.removeItem('token');
+          setToken(null);
+          setUser(null);
+        });
+      }
     }
   }, []);
 
   const login = async (email: string, password: string) => {
-    const response = await fetch(`${import.meta.env.VITE_API_URL}/api/login`, {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/api/login`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email, password }),
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username: email, password }),
     });
-
-    if (!response.ok) {
-      throw new Error('Login fehlgeschlagen');
-    }
-
-    const data = await response.json();
-    setToken(data.token);
-    setUser(data.user);
-    localStorage.setItem('token', data.token);
-    localStorage.setItem('user', JSON.stringify(data.user));
-  };
-
-  const register = async (email: string, password: string, name: string) => {
-    const response = await fetch(`${import.meta.env.VITE_API_URL}/api/register`, {
-      method: 'POST',
+    if (!res.ok) throw new Error('Login fehlgeschlagen');
+    const data = await res.json();
+    if (!data.access_token) throw new Error('Kein Token erhalten');
+    
+    // Fetch user details after successful login
+    const userRes = await fetch(`${import.meta.env.VITE_API_URL}/api/users/me`, {
       headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email, password, name }),
+        'Authorization': `Bearer ${data.access_token}`
+      }
     });
-
-    if (!response.ok) {
-      throw new Error('Registrierung fehlgeschlagen');
-    }
-
-    const data = await response.json();
-    setToken(data.token);
-    setUser(data.user);
-    localStorage.setItem('token', data.token);
-    localStorage.setItem('user', JSON.stringify(data.user));
+    if (!userRes.ok) throw new Error('Fehler beim Laden der Benutzerdaten');
+    const userData = await userRes.json();
+    
+    localStorage.setItem('token', data.access_token);
+    setToken(data.access_token);
+    setUser(userData);
   };
 
   const logout = () => {
+    localStorage.removeItem('token');
     setToken(null);
     setUser(null);
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
   };
 
   const updateUser = (updatedUser: User) => {
     setUser(updatedUser);
-    localStorage.setItem('user', JSON.stringify(updatedUser));
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, login, register, logout, updateUser }}>
+    <AuthContext.Provider value={{ user, token, login, logout, updateUser }}>
       {children}
     </AuthContext.Provider>
   );
 }
 
 export function useAuth() {
-  const context = useContext(AuthContext);
-  if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
-  return context;
-}
+  const ctx = useContext(AuthContext);
+  if (!ctx) throw new Error('useAuth must be used within AuthProvider');
+  return ctx;
+} 

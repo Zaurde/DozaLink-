@@ -83,13 +83,17 @@ export function ListingForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
+    setLoading(true);
+    console.log('Login wurde ausgelöst!');
     setSuccess(false);
     if (!title || !description || !price || !category || !location || !condition) {
       setError('Bitte fülle alle Pflichtfelder aus.');
+      setLoading(false);
       return;
     }
     if (images.length === 0) {
       setError('Bitte lade mindestens ein Bild hoch.');
+      setLoading(false);
       return;
     }
     if (!token) {
@@ -97,7 +101,6 @@ export function ListingForm() {
       setLoading(false);
       return;
     }
-    setLoading(true);
     setUploadProgress(0);
     try {
       // Bilder hochladen
